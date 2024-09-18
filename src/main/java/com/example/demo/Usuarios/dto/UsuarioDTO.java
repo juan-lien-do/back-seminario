@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.Usuarios.dto;
 
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -9,8 +9,10 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(makeFinal = true)
 @ToString
-public class UsuarioDTOAfterLogin {
+public class UsuarioDTO {
     String nombre;
-    String token;
+    String email;
+    String password;
+    Long id;
     Boolean isAdmin;
 }

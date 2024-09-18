@@ -1,10 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.Usuarios.service;
 
-import com.example.demo.domain.Usuario;
-import com.example.demo.domain.UsuarioPrincipal;
-import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.Usuarios.repository.UsuarioRepository;
+import com.example.demo.Usuarios.domain.Usuario;
+import com.example.demo.Usuarios.domain.UsuarioPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

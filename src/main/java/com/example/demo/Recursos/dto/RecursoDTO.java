@@ -1,5 +1,4 @@
-package com.example.demo.dto;
-
+package com.example.demo.Recursos.dto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -9,10 +8,11 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(makeFinal = true)
 @ToString
-public class UsuarioDTO {
-    String nombre;
-    String email;
-    String password;
+
+public class RecursoDTO {
     Long id;
-    Boolean isAdmin;
+    String nombre;
+    Long cantidad;
+    Long categoria;
+    String descripcion;
 }
