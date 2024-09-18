@@ -30,14 +30,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/register").hasAnyRole("ADMIN")
-                        .anyRequest().authenticated())
-                        //.anyRequest().permitAll())
+                        //.requestMatchers("/login").permitAll()
+                        //.requestMatchers("/register").hasAnyRole("ADMIN")
+                        //.anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 //.cors(cors -> cors.configure())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+                /* TODO ACTIVAR Y DESACTIVAR TOKEN*/
+                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
