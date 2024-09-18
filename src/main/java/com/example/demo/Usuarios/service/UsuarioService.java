@@ -1,14 +1,14 @@
-package com.example.demo.service;
+package com.example.demo.Usuarios.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.domain.Usuario;
-import com.example.demo.dto.UsuarioDTO;
-import com.example.demo.dto.UsuarioDTOAfterLogin;
+import com.example.demo.Usuarios.dto.UsuarioDTO;
+import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
+import com.example.demo.Usuarios.mapper.UsuarioMapper;
+import com.example.demo.Usuarios.repository.UsuarioRepository;
+import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.exceptions.WrongCredentialsException;
-import com.example.demo.mapper.UsuarioMapper;
-import com.example.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

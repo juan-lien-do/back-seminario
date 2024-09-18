@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.Usuarios.dto;
 
 import lombok.*;
 import lombok.experimental.Accessors;

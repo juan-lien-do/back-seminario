@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.service.JWTService;
-import com.example.demo.service.MyUserDetailsService;
+import com.example.demo.Usuarios.service.JWTService;
+import com.example.demo.Usuarios.service.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

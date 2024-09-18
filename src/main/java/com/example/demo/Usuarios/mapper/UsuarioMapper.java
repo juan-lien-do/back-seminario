@@ -1,7 +1,7 @@
-package com.example.demo.mapper;
+package com.example.demo.Usuarios.mapper;
 
-import com.example.demo.domain.Usuario;
-import com.example.demo.dto.UsuarioDTO;
+import com.example.demo.Usuarios.dto.UsuarioDTO;
+import com.example.demo.Usuarios.domain.Usuario;
 
 public class UsuarioMapper {
     public static UsuarioDTO toDto(Usuario usuario){

@@ -1,18 +1,14 @@
-package com.example.demo.controller;
+package com.example.demo.Usuarios.controller;
 
-import com.example.demo.domain.Usuario;
-import com.example.demo.dto.UsuarioDTO;
-import com.example.demo.dto.UsuarioDTOAfterLogin;
+import com.example.demo.Usuarios.dto.UsuarioDTO;
+import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
+import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.exceptions.WrongCredentialsException;
-import com.example.demo.mapper.UsuarioMapper;
-import com.example.demo.service.JWTService;
-import com.example.demo.service.UsuarioService;
+import com.example.demo.Usuarios.mapper.UsuarioMapper;
+import com.example.demo.Usuarios.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
