@@ -22,7 +22,7 @@ public class Deposito {
 
     @Id
     @Column(name = "iddeposito")
-    private String idDeposito;
+    private Long idDeposito;
 
     @Column(name = "nombre")
     private String nombre;
