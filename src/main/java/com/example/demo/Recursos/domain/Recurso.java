@@ -16,8 +16,7 @@ public class Recurso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "idRecurso")
+    @Column(name = "idrecurso")
     private Long id;
 
     @Column(name = "nombre")
@@ -31,4 +30,7 @@ public class Recurso {
 
     @Column(name = "descripcion")
     private String descripcion;
+
+    @Column(name = "activo")
+    private Boolean activo;
 }

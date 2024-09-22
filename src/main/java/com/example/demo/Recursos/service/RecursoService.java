@@ -30,12 +30,31 @@ public class RecursoService {
                 .toList();
     }
 
+    //Obtener un recurso en particular por ID
+    public RecursoDTO getRecursoById(Long id) throws NotFoundException{
+        Optional<Recurso> recurso = recursoRepository.findById(id);
+        if(recurso.isEmpty()){
+            throw new NotFoundException("No se encontró el recurso solicitado");
+        } else {
+            return RecursoMapper.toDTO(recurso.get());
+        }
+    }
+
+    //Método POST para Recursos
     @Transactional
-    //método POST para Recursos
     public RecursoDTO create(RecursoDTO body) throws BadRequestException{
 
         if(body.getNombre().isEmpty()){
             throw new BadRequestException("Ingrese nombre del recurso");
+        }
+        //Ojo, capaz conviene separarlo
+        if(body.getNombre().length() > 50 || body.getDescripcion().length() > 200) {
+            throw new BadRequestException("Se superó el límite de carácteres aceptados");
+        }
+
+        //VALIDACIÓN MOMENTÁNEA
+        if(body.getActivo() == null){
+            throw new BadRequestException("Ingrese el estado del recurso");
         }
 
         // Mapeo del DTO a la entidad
@@ -46,5 +65,32 @@ public class RecursoService {
 
         // Retornar el DTO mapeado desde la entidad guardada
         return RecursoMapper.toDTO(recursoGuardado);
+    }
+
+    // Método DELETE para modificar algún recurso de la BBDD
+    @Transactional
+    public Boolean logicDelete(Long id) throws NotFoundException {
+        Optional<Recurso> recursoOptional = recursoRepository.findById(id);
+        if(recursoOptional.isPresent()) {
+            Recurso recurso = recursoOptional.get();
+            recurso.setActivo(false);
+            recursoRepository.save(recurso);
+            return true;
+        } else {
+            throw new NotFoundException("No se encontró el recurso");
+        }
+    }
+
+    //Métodos PUT para actualizar recursos de la BBDD
+    @Transactional
+    public RecursoDTO update(Long id, RecursoDTO recursoDTO) throws NotFoundException {
+        if(recursoRepository.existsById(id)) {
+            Recurso recursoNuevo = RecursoMapper.toEntity(recursoDTO);
+            recursoNuevo.setId(id);
+            Recurso recursoGuardado = recursoRepository.save(recursoNuevo);
+            return RecursoMapper.toDTO(recursoGuardado);
+        } else {
+            throw new NotFoundException("No se encontró el recurso deseado");
+        }
     }
 }

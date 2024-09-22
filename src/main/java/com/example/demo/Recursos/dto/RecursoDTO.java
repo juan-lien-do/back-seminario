@@ -15,4 +15,5 @@ public class RecursoDTO {
     Long cantidad;
     Long categoria;
     String descripcion;
+    Boolean activo;
 }
