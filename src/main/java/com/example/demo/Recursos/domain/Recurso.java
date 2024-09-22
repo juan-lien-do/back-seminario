@@ -1,7 +1,11 @@
 package com.example.demo.Recursos.domain;
 
+import com.example.demo.Existencias.domain.Existencia;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +37,9 @@ public class Recurso {
 
     @Column(name = "activo")
     private Boolean activo;
+
+
+    @OneToMany(mappedBy = "recurso")
+    @JsonManagedReference
+    private List<Existencia> existencias;
 }

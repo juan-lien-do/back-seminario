@@ -2,6 +2,8 @@ package com.example.demo.Recursos.dto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @Getter
@@ -16,4 +18,5 @@ public class RecursoDTO {
     Long categoria;
     String descripcion;
     Boolean activo;
+    List existencias;
 }
