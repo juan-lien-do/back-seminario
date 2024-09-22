@@ -30,6 +30,14 @@ public class RecursoService {
                 .toList();
     }
 
+    //Obtener todos los recursos de la BBDD filtrados por categoria
+    public List<RecursoDTO> getAllRecursosCat(Long categoria){
+        List<Recurso> lista = recursoRepository.findByCategoria(categoria);
+        return lista.stream()
+                .map(RecursoMapper::toDTO)
+                .toList();
+    }
+
     //Obtener un recurso en particular por ID
     public RecursoDTO getRecursoById(Long id) throws NotFoundException{
         Optional<Recurso> recurso = recursoRepository.findById(id);

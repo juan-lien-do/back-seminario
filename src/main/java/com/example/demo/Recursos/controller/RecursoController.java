@@ -24,23 +24,31 @@ public class RecursoController {
     @Autowired
     public final RecursoService recursoService;
 
-    /* Métodos GET todos, y por ID */
-
+    /* Métodos GET */
+        //Todos los
     @GetMapping("")
     public ResponseEntity<List<RecursoDTO>> getAll(){
-        List<RecursoDTO> muebles = recursoService.getAllRecursos();
-        return ResponseEntity.ok(muebles);
+        List<RecursoDTO> recursos = recursoService.getAllRecursos();
+        return ResponseEntity.ok(recursos);
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<RecursoDTO>> getAllbyCategoria(
+            @RequestParam("categoria") Long categoria){
+        List<RecursoDTO> recursos = recursoService.getAllRecursosCat(categoria);
+        return ResponseEntity.ok(recursos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RecursoDTO> getById(@PathVariable Long id){
         try {
-            RecursoDTO mueble = recursoService.getRecursoById(id);
-            return ResponseEntity.ok(mueble);
+            RecursoDTO recurso = recursoService.getRecursoById(id);
+            return ResponseEntity.ok(recurso);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().header("ERROR_MSG", e.getMessage()).build();
         }
     }
+
 
     // Métodos POST para agregar un recurso PD: es autoincremental
     @PostMapping("/")
