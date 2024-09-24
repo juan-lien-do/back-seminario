@@ -56,7 +56,7 @@ public class RecursoService {
         }
     }
 
-    /* Método que por el momento funcionaba
+    // Método que por el momento funcionaba
     //Método POST para Recursos
     @Transactional
     public RecursoDTO create(RecursoDTO body) throws BadRequestException{
@@ -82,7 +82,7 @@ public class RecursoService {
 
         // Retornar el DTO mapeado desde la entidad guardada
         return RecursoMapper.toDTO(recursoGuardado);
-    } */
+    }
 
     /* Este me tiro para resolver chatGPT pero no puede resolver la verificacion de existencias
     @Transactional
