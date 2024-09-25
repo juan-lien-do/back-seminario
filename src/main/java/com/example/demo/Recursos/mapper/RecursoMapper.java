@@ -13,6 +13,8 @@ public class RecursoMapper {
                 .cantidad(recurso.getCantidad())
                 .categoria(recurso.getCategoria())
                 .descripcion(recurso.getDescripcion())
+                .activo(recurso.getActivo())
+                .existencias(recurso.getExistencias())
                 .build();
     }
 
@@ -24,6 +26,8 @@ public class RecursoMapper {
                 .cantidad(recursoDTO.getCantidad())
                 .categoria(recursoDTO.getCategoria())
                 .descripcion(recursoDTO.getDescripcion())
+                .activo(recursoDTO.getActivo())
+                .existencias(recursoDTO.getExistencias())
                 .build();
     }
 }

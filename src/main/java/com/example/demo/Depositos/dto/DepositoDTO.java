@@ -1,4 +1,4 @@
-package com.example.demo.Recursos.dto;
+package com.example.demo.Depositos.dto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -11,12 +11,8 @@ import java.util.List;
 @Accessors(makeFinal = true)
 @ToString
 
-public class RecursoDTO {
+public class DepositoDTO {
     Long id;
     String nombre;
-    Long cantidad;
-    Long categoria;
-    String descripcion;
-    Boolean activo;
-    List existencias;
+    String ubicacion;
 }
