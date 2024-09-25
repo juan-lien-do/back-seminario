@@ -27,4 +27,6 @@ public class Empleado {
     private String telefono;
     @Column(name = "activo")
     private Boolean activo;
+    @Column(name = "ws")
+    private String ws;
 }

@@ -1,7 +1,7 @@
 package com.example.demo.Empleados.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Builder
@@ -9,11 +9,16 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmpleadoRequestDTO {
-
+public class EmpleadoPutRequestDTO {
+    @NotNull
+    private Long idEmpleado;
+    @NotNull
     private Long cuil;
     @NotEmpty
     private String nombre;
     private String mail;
+    private String ws;
     private String telefono;
+    private Boolean activo;
+
 }

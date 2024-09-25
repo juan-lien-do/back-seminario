@@ -15,6 +15,7 @@ public class EmpleadoResponseDTO {
     private Long idEmpleado;
     private Long cuil;
     private String nombre;
+    private String ws;
     private String mail;
     private String telefono;
     private Boolean activo;
