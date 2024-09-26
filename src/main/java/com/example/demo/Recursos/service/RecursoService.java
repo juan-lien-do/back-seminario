@@ -1,10 +1,6 @@
 package com.example.demo.Recursos.service;
 
-import com.example.demo.Depositos.domain.Deposito;
-import com.example.demo.Depositos.repository.DepositoRepository;
 import com.example.demo.Depositos.serivce.DepositoService;
-import com.example.demo.Existencias.domain.Existencia;
-import com.example.demo.Existencias.dto.ExistenciaDTO;
 import com.example.demo.Recursos.domain.Recurso;
 import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.Recursos.mapper.*;
@@ -45,6 +41,8 @@ public class RecursoService {
                 .map(RecursoMapper::toDTO)
                 .toList();
     }
+
+
 
     //Obtener un recurso en particular por ID
     public RecursoDTO getRecursoById(Long id) throws NotFoundException {
@@ -147,6 +145,20 @@ public class RecursoService {
         }
     }
 
+    @Transactional
+    public Boolean logicUndelete(Long id) throws NotFoundException {
+        Optional<Recurso> recursoOptional = recursoRepository.findById(id);
+        if(recursoOptional.isPresent()) {
+            Recurso recurso = recursoOptional.get();
+            recurso.setActivo(true);
+            recursoRepository.save(recurso);
+            return true;
+        } else {
+            throw new NotFoundException("No se encontró el recurso");
+        }
+    }
+
+
     //Métodos PUT para actualizar recursos de la BBDD
     @Transactional
     public RecursoDTO update(Long id, RecursoDTO recursoDTO) throws NotFoundException {
@@ -158,5 +170,9 @@ public class RecursoService {
         } else {
             throw new NotFoundException("No se encontró el recurso deseado");
         }
+    }
+
+    public List<RecursoDTO> getAllRecursosByActivo(Boolean activo){
+        return recursoRepository.findByActivo(activo).stream().map(RecursoMapper::toDTO).toList();
     }
 }

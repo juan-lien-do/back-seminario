@@ -5,7 +5,9 @@ import com.example.demo.Empleados.dto.EmpleadoPostRequestDTO;
 import com.example.demo.Empleados.dto.EmpleadoPutRequestDTO;
 import com.example.demo.Empleados.dto.EmpleadoResponseDTO;
 import com.example.demo.Empleados.service.EmpleadoService;
+import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.exceptions.NotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +15,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/empleados")
-@CrossOrigin(allowedHeaders = "*")
+@CrossOrigin(allowedHeaders = "*", origins = "http://localhost:5173")
 @AllArgsConstructor
 public class EmpleadoController {
     @Autowired
     private final EmpleadoService empleadoService;
 
     @GetMapping("/") // nombre, activo
-    public ResponseEntity<List<EmpleadoResponseDTO>> getAll(@RequestParam(required = false) Map<String, String> allParams) {
+    public ResponseEntity<List<EmpleadoResponseDTO>> getAll(@RequestParam(required = false) Map<String, String> allParams, HttpServletRequest httpServletRequest) {
+        //System.out.println(httpServletRequest.toString());
+        /*Enumeration<String> headers = httpServletRequest.getHeaderNames();
+        List<String> finalList = Collections.list(headers);
+        finalList.stream().forEach((String x)->{
+            System.out.println(httpServletRequest.getHeader(x));
+        });*/
+        System.out.println(httpServletRequest.getHeader("Authorization"));
+
+        System.out.println();
         return ResponseEntity.ok(empleadoService.getAll(allParams));
     }
+
+
 
     @PostMapping("/")
     public ResponseEntity<String> postEmpleado(@RequestBody @Validated EmpleadoPostRequestDTO empleadoPostRequestDTO) {
