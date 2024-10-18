@@ -36,7 +36,7 @@ public class ComputadoraController {
 
      //URI para que traiga todos los activos por defecto
     @GetMapping("/")
-    public ResponseEntity<List<ComputadoraDTO>> getAllByParams(@RequestParam(required = true) Boolean esActivo){
+    public ResponseEntity<List<ComputadoraDTO>> getAllByParams(@RequestParam(defaultValue = "true") Boolean esActivo){
         List<ComputadoraDTO> computadoraDTOS = computadoraService.getAllComputadorasByActivo(esActivo);
         return ResponseEntity.ok(computadoraDTOS);
     }
