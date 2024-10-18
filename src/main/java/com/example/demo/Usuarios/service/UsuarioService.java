@@ -8,7 +8,9 @@ import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.Usuarios.domain.Usuario;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
+import com.example.demo.notificaciones.services.TwilioNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,12 +26,15 @@ public class UsuarioService {
     @Autowired
     private final UsuarioRepository usuarioRepository;
     @Autowired
+    private final TwilioNotificationService twilioNotificationService;
+    @Autowired
     private final JWTService jwtService;
 
-    public UsuarioService(AuthenticationManager authManager, UsuarioRepository usuarioRepository, JWTService jwtService) {
+    public UsuarioService(AuthenticationManager authManager, UsuarioRepository usuarioRepository, JWTService jwtService, TwilioNotificationService twilioNotificationService) {
         this.authManager = authManager;
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
+        this.twilioNotificationService = twilioNotificationService;
     }
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -61,6 +66,18 @@ public class UsuarioService {
             return ans;
         } else {
             throw new WrongCredentialsException("Wrong credentials");
+        }
+    }
+
+    public String notificar(Long id) throws NotFoundException {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isEmpty()) throw new NotFoundException("No se encontró el usuario");
+        else {
+            String numero = usuario.get().getTelefono();
+
+            twilioNotificationService.notificarUsuario(numero);
+
+            return numero;
         }
     }
 }

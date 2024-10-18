@@ -161,6 +161,13 @@ public class RecursoService {
     //Métodos PUT para actualizar recursos de la BBDD
     @Transactional
     public RecursoDTO update(Long id, RecursoDTO recursoDTO) throws NotFoundException {
+        /*Optional<Recurso> recOpt = recursoRepository.findById(id);
+        if (recOpt.isEmpty()) throw new NotFoundException("no hay recurso");
+
+        Recurso rec = recOpt.get();
+        if()*/
+
+
         if(recursoRepository.existsById(id)) {
             Recurso recursoNuevo = RecursoMapper.toEntity(recursoDTO);
             recursoNuevo.setId(id);
