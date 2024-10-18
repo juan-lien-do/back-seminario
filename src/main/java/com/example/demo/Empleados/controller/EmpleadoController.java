@@ -6,6 +6,7 @@ import com.example.demo.Empleados.dto.EmpleadoPutRequestDTO;
 import com.example.demo.Empleados.dto.EmpleadoResponseDTO;
 import com.example.demo.Empleados.service.EmpleadoService;
 import com.example.demo.Recursos.dto.RecursoDTO;
+import com.example.demo.config.TwilioConfig;
 import com.example.demo.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,8 @@ public class EmpleadoController {
         finalList.stream().forEach((String x)->{
             System.out.println(httpServletRequest.getHeader(x));
         });*/
-        System.out.println(httpServletRequest.getHeader("Authorization"));
+        //System.out.println(httpServletRequest.getHeader("Authorization"));
+        TwilioConfig config = TwilioConfig.getInstance();
 
         System.out.println();
         return ResponseEntity.ok(empleadoService.getAll(allParams));
