@@ -43,7 +43,6 @@ public class RecursoService {
     }
 
 
-
     //Obtener un recurso en particular por ID
     public RecursoDTO getRecursoById(Long id) throws NotFoundException {
         Optional<Recurso> recurso = recursoRepository.findById(id);
