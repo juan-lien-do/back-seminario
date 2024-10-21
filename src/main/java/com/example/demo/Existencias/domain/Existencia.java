@@ -17,11 +17,12 @@ import lombok.*;
 public class Existencia {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idexistencia") // Verifica que este nombre sea correcto
-    private String id;
+    private Long id;
 
     @Column(name = "cantidad") // Verifica que este nombre sea correcto
-    private int cantidad;
+    private Long cantidad;
 
     @ManyToOne
     @JsonBackReference
