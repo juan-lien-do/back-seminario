@@ -11,6 +11,6 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
     List<Empleado> findByNombreAndActivo(String nombre, Boolean activo);
     List<Empleado> findByNombreContaining(String nombre);
     List<Empleado> findByNombreContainingAndActivo(String nombre, Boolean activo);
-
+    List<Empleado> findByCuil(Long cuil);
 
 }

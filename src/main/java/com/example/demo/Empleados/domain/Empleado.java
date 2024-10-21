@@ -4,6 +4,8 @@ package com.example.demo.Empleados.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "empleados")
 @Builder
@@ -29,4 +31,7 @@ public class Empleado {
     private Boolean activo;
     @Column(name = "ws")
     private String ws;
+    @Column(name = "deleteDate")
+    private LocalDate deleteDate;
+
 }

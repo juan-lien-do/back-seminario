@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Builder
 @Getter
 @Setter
@@ -19,4 +21,5 @@ public class EmpleadoResponseDTO {
     private String mail;
     private String telefono;
     private Boolean activo;
+    private LocalDate deleteDate;
 }

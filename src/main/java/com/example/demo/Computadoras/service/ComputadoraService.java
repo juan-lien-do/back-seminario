@@ -80,7 +80,7 @@ public class ComputadoraService {
         }
 
         //Verfica que el nro de WS no haya sido cargado previamente
-        if (computadoraRepository.existsByNroWs(body.getNroWs())) {
+        if (body.getEsMasterizado() && computadoraRepository.existsByNroWs(body.getNroWs())) {
             throw new BadRequestException("El nroWs ya está en uso, debe ser único.");
         }
 
