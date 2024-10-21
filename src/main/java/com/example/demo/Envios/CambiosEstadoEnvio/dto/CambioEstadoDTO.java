@@ -1,5 +1,6 @@
 package com.example.demo.Envios.CambiosEstadoEnvio.dto;
 
+import com.example.demo.Envios.Envios.domain.Envio;
 import lombok.*;
 import lombok.experimental.Accessors;
 import java.util.Date;
@@ -16,4 +17,5 @@ public class CambioEstadoDTO {
     Date fechaInicio;
     Date fechaFin;
     Long idEstadioEnvio;
+    Envio envio;
 }

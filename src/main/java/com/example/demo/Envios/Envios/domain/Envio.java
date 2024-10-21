@@ -24,7 +24,7 @@ public class Envio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idenvio")
-    private Long id;
+    private Long idEnvio;
 
     @Column(name = "idempleado")
     private Long idEmpleado;

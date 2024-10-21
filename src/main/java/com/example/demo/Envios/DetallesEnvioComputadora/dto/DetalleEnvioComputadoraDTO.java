@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
 @ToString
 
 public class DetalleEnvioComputadoraDTO {
-
     Long idDetalleComputadora;
     Long idComputadora;
     Envio envio;

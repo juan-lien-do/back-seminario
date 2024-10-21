@@ -18,4 +18,5 @@ public class EnvioDTO {
     Date fechaPreparacion;
     List detallesEnvioComputadora;
     List detallesEnvioRecurso;
+    List listaCambiosEstado;
 }

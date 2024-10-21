@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @ToString
 @Entity
-@Table(name = "cambiosestadoenvio")
+@Table(name = "cambiosEstadoEnvio")
 
 public class CambioEstadoEnvio {
 

@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @ToString
 @Entity
-@Table(name = "detallesenviocomputadora")
+@Table(name = "detallesEnvioComputadora")
 
 public class DetalleEnvioComputadora {
 
