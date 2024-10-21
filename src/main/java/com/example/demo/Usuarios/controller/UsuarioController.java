@@ -3,6 +3,7 @@ package com.example.demo.Usuarios.controller;
 import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
 import com.example.demo.Usuarios.domain.Usuario;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
 import com.example.demo.Usuarios.service.UsuarioService;
@@ -44,6 +45,19 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/usuarios/notify/{id}") // el id del usuario
+    public ResponseEntity<String> notificar(@PathVariable Long id){
+        try{
+            String telefono = usuarioService.notificar(id);
+            ResponseEntity.status(201).body(telefono);
+        } catch (NotFoundException e){
+            return ResponseEntity.notFound().build();
+        } catch (Exception e){
+            return ResponseEntity.notFound().header("ERROR", "No hay telefono").build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<UsuarioDTOAfterLogin> login(@RequestBody UsuarioDTO user) {
 
@@ -54,7 +68,5 @@ public class UsuarioController {
         }
 
     }
-
-
 
 }

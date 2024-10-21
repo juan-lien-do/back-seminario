@@ -24,4 +24,6 @@ public class Usuario {
     private String password;
     @Column(name = "is_admin")
     private Boolean isAdmin;
+    @Column(name= "telefono")
+    private String telefono;
 }

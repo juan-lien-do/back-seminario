@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 @ToString
 
 public class ExistenciaDTO {
-    private String id;
+    private Long id;
     private int cantidad;
     private Recurso recurso;
     private Deposito deposito;
