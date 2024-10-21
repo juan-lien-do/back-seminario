@@ -1,9 +1,6 @@
 package com.example.demo.Computadoras.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -18,6 +15,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 public class Computadora {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idcomputadora")
     private Long idComputadora;
 
