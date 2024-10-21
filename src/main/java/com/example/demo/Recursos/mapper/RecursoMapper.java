@@ -27,7 +27,6 @@ public class RecursoMapper {
                 .categoria(recursoDTO.getCategoria())
                 .descripcion(recursoDTO.getDescripcion())
                 .activo(recursoDTO.getActivo())
-                .existencias(recursoDTO.getExistencias())
                 .build();
     }
 }
