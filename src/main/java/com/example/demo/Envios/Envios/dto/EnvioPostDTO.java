@@ -1,5 +1,6 @@
 package com.example.demo.Envios.Envios.dto;
 
+import com.example.demo.Envios.DetallesEnvioComputadora.dto.DetalleEnvioComputadoraPostDTO;
 import com.example.demo.Envios.DetallesEnvioRecurso.dto.DetalleRecursoPostDTO;
 import lombok.*;
 
@@ -14,7 +15,7 @@ public class EnvioPostDTO {
     Long idEmpleado;
     String nombreUsuario;
     List<DetalleRecursoPostDTO> detallesEnvioRecurso;
-    //List<dDetalleComputadoraPostDTO> detallesEnvioComputadora;
+    List<DetalleEnvioComputadoraPostDTO> detallesEnvioComputadora;
 
 
 }
