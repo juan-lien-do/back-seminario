@@ -12,6 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+
 public class Empleado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
