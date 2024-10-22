@@ -27,9 +27,11 @@ import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.notificaciones.services.TwilioNotificationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -61,6 +63,8 @@ public class EnvioService {
     private final ExistenciasService existenciasService;
     @Autowired
     private final ComputadoraRepository computadoraRepository;
+    @Autowired
+    private final TwilioNotificationService twilioNotificationService;
 
     // ------------------------------------ MÉTODOS GET ------------------------------------------------------//
 
@@ -172,5 +176,39 @@ public class EnvioService {
 
         return envPersist.toResponseDTO();
     }
+
+    public void cambiarEstado(Long idEnvio, Long idEstado) throws Exception {
+        Optional<Envio> envioOptional = envioRepository.findById(idEnvio);
+        if (envioOptional.isEmpty()) throw new NotFoundException("No se encontró el envío.");
+
+        // Buscar el último cambio de estado con fechaFin == null
+        CambioEstadoEnvio cev = envioOptional.get().getListaCambiosEstado().stream()
+                .filter(x -> x.getFechaFin() == null)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("No hay cambio de estado sin fecha de finalización."));
+
+        LocalDate actual = LocalDate.now();
+
+        // Actualizar fechaFin del último cambio de estado
+        cev.setFechaFin(actual);
+
+        // Crear un nuevo cambio de estado
+        CambioEstadoEnvio cambioEstadoEnvio = CambioEstadoEnvio.builder()
+                .envio(envioOptional.get())
+                .fechaInicio(actual)
+                .idEstadoEnvio(idEstado)
+                .build();
+
+        // Guardar ambos cambios
+        cambiosEstadoEnvioRepository.save(cev);
+        cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
+
+        // Enviar notificación si el estado es 2
+        if (idEstado == 2) {
+            twilioNotificationService.notificarUsuario("+5493525413678");
+            twilioNotificationService.notificarUsuario("+5493586022582");
+        }
+    }
+
 
 }
