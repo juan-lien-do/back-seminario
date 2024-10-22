@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(makeFinal = true)
 @ToString
-
 public class DetalleEnvioComputadoraDTO {
     Long idDetalleComputadora;
     Long idComputadora;

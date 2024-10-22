@@ -1,11 +1,14 @@
 package com.example.demo.Envios.Envios.service;
 
+import com.example.demo.Computadoras.domain.Computadora;
+import com.example.demo.Computadoras.repository.ComputadoraRepository;
 import com.example.demo.Empleados.domain.Empleado;
 import com.example.demo.Empleados.repository.EmpleadoRepository;
 import com.example.demo.Empleados.service.EmpleadoService;
 import com.example.demo.Envios.CambiosEstadoEnvio.domain.CambioEstadoEnvio;
 import com.example.demo.Envios.CambiosEstadoEnvio.repository.CambiosEstadoEnvioRepository;
 import com.example.demo.Envios.DetallesEnvioComputadora.domain.DetalleEnvioComputadora;
+import com.example.demo.Envios.DetallesEnvioComputadora.dto.DetalleEnvioComputadoraPostDTO;
 import com.example.demo.Envios.DetallesEnvioComputadora.repository.DetallesEnvioComputadoraRepository;
 import com.example.demo.Envios.DetallesEnvioRecurso.domain.DetalleEnvioRecurso;
 import com.example.demo.Envios.DetallesEnvioRecurso.dto.DetalleRecursoPostDTO;
@@ -56,11 +59,13 @@ public class EnvioService {
     private final CambiosEstadoEnvioRepository cambiosEstadoEnvioRepository;
     @Autowired
     private final ExistenciasService existenciasService;
+    @Autowired
+    private final ComputadoraRepository computadoraRepository;
 
     // ------------------------------------ MÉTODOS GET ------------------------------------------------------//
 
     //Obtener todos los Envios de la BBDD
-    public List<EnvioResponseDTO> getAllEnvios(){
+    public List<EnvioResponseDTO> getAllEnvios() {
         List<Envio> listEnvios = envioRepository.findAll();
         return listEnvios.stream()
                 .map(Envio::toResponseDTO)
@@ -93,13 +98,15 @@ public class EnvioService {
                 .idEstadoEnvio(1l)
                 .build();
 
+        List<DetalleEnvioComputadora> decs = new ArrayList<>();
+
         List<DetalleEnvioRecurso> ders = new ArrayList<>();
 
         List<Existencia> existencias = new ArrayList<>();
 
         for (DetalleRecursoPostDTO derp : body.getDetallesEnvioRecurso()) {
             Optional<Existencia> ex = existenciasRepository.findById(derp.getIdExistencia());
-            if (ex.isEmpty()) throw new NotFoundException("No se encontró existencia");
+            if (ex.isEmpty()) throw new NotFoundException("No se encontró existencia.");
 
             DetalleEnvioRecurso der = DetalleEnvioRecurso.builder()
                     .cantidad(derp.getCantidad())
@@ -111,27 +118,40 @@ public class EnvioService {
             ders.add(der);
         }
 
+        for (DetalleEnvioComputadoraPostDTO decp :
+                body.getDetallesEnvioComputadora()) {
+            Optional<Computadora> compu = computadoraRepository.findById(decp.getIdComputadora());
+            if (compu.isEmpty()) throw new NotFoundException("No se encontró computadora.");
+
+            DetalleEnvioComputadora dec = new DetalleEnvioComputadora();
+            dec.setComputadora(compu.get());
+
+            decs.add(dec);
+        }
+
         Envio env = Envio.builder()
                 .fechaPreparacion(fechaActual)
                 .empleado(empleado.get())
                 .usuario(usuario.get())
                 .detallesEnvioRecurso(ders)
-                .detallesEnvioComputadora(new ArrayList<DetalleEnvioComputadora>())
+                .detallesEnvioComputadora(decs)
                 .listaCambiosEstado(List.of(cev))
                 .build();
 
 
         Envio envPersist = envioRepository.save(env);
 
-        ders.forEach(d->{
+        ders.forEach(d -> {
             d.setEnvio(envPersist);
-
         });
-
+        decs.forEach(d -> {
+            d.setEnvio(envPersist);
+        });
         cev.setEnvio(envPersist);
 
         detalleEnvioRecursoRepository.saveAll(ders);
         cambiosEstadoEnvioRepository.save(cev);
+        detallesEnvioComputadoraRepository.saveAll(decs);
         // TODO
         //detallesEnvioComputadoraRepository.save(xxxx);
 
@@ -139,7 +159,7 @@ public class EnvioService {
 
         List<ExistenciaRequestDTO> exReqDto = new ArrayList<>();
 
-        ders.forEach(x->{
+        ders.forEach(x -> {
             ExistenciaRequestDTO er = new ExistenciaRequestDTO(
                     x.getCantidad(), x.getRecurso().getId(), x.getExistencia().getDeposito().getIdDeposito()
             );
