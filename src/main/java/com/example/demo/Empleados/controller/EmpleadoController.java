@@ -7,6 +7,7 @@ import com.example.demo.Empleados.dto.EmpleadoResponseDTO;
 import com.example.demo.Empleados.service.EmpleadoService;
 import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.config.TwilioConfig;
+import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,8 @@ public class EmpleadoController {
     public ResponseEntity<String> putEmpleado(@RequestBody @Validated EmpleadoPutRequestDTO empleadoPutRequestDTO) {
         try {
             return ResponseEntity.status(201).body(empleadoService.updateEmpleado(empleadoPutRequestDTO));
+        } catch (BadRequestException e){
+            return ResponseEntity.badRequest().header("error", e.getMessage()).build();
         } catch (NotFoundException e){
             return ResponseEntity.notFound().header("error",e.getMessage()).build();
         }

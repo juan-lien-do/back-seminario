@@ -38,6 +38,7 @@ public class EmpleadoMapper {
                 .mail(empleado.getMail())
                 .ws(empleado.getWs())
                 .telefono(empleado.getTelefono())
+                .deleteDate(empleado.getDeleteDate())
                 .build();
     }
 }
