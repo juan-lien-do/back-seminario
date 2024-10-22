@@ -2,6 +2,7 @@ package com.example.demo.Envios.Envios.dto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class EnvioDTO {
     Long idEnvio;
     Long idEmpleado;
-    Date fechaPreparacion;
+    LocalDate fechaPreparacion;
     List detallesEnvioComputadora;
     List detallesEnvioRecurso;
     List listaCambiosEstado;

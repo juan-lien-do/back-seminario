@@ -1,9 +1,7 @@
 package com.example.demo.Envios.DetallesEnvioRecurso.dto;
 
-import com.example.demo.Envios.Envios.domain.Envio;
 import lombok.*;
 import lombok.experimental.Accessors;
-
 
 @Builder
 @AllArgsConstructor
@@ -11,12 +9,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(makeFinal = true)
 @ToString
-
-public class DetalleEnvioRecursoDTO {
-
-    Long idDetalleRecurso;
-    Long idRecurso;
+public class DetalleRecursoPostDTO {
     Long cantidad;
-    Envio envio;
-
+    Long idRecurso;
+    Long idExistencia;
 }

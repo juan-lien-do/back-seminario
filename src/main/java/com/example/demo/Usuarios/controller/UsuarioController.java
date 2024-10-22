@@ -49,13 +49,12 @@ public class UsuarioController {
     public ResponseEntity<String> notificar(@PathVariable Long id){
         try{
             String telefono = usuarioService.notificar(id);
-            ResponseEntity.status(201).body(telefono);
+            return ResponseEntity.status(201).body(telefono);
         } catch (NotFoundException e){
             return ResponseEntity.notFound().build();
         } catch (Exception e){
             return ResponseEntity.notFound().header("ERROR", "No hay telefono").build();
         }
-        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/login")

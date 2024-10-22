@@ -1,10 +1,12 @@
 package com.example.demo.Envios.CambiosEstadoEnvio.domain;
 
+import com.example.demo.Envios.CambiosEstadoEnvio.dto.CambioEstadoDTO;
 import com.example.demo.Envios.Envios.domain.Envio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -24,10 +26,10 @@ public class CambioEstadoEnvio {
     private Long idCambioEstado;
 
     @Column(name = "fechainicio")
-    private Date fechaInicio;
+    private LocalDate fechaInicio;
 
     @Column(name = "fechafin")
-    private Date fechaFin;
+    private LocalDate fechaFin;
 
     @Column(name = "idestadoenvio")
     private Long idEstadoEnvio;
@@ -36,4 +38,13 @@ public class CambioEstadoEnvio {
     @JsonBackReference
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
     private Envio envio;
+
+    public CambioEstadoDTO toDTO(){
+        return CambioEstadoDTO.builder()
+                .idEstadoEnvio(this.idEstadoEnvio)
+                .fechaInicio(this.fechaInicio)
+                .fechaFin(this.fechaFin)
+                .idCambioEstado(this.idCambioEstado)
+                .build();
+    }
 }

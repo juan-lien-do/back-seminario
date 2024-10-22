@@ -1,5 +1,7 @@
 package com.example.demo.Existencias.domain;
 
+import com.example.demo.Existencias.dto.ExistenciaDTO;
+import com.example.demo.Existencias.dto.ExistenciaResponseDTO;
 import com.example.demo.Recursos.domain.Recurso;
 import com.example.demo.Depositos.domain.Deposito;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,4 +34,12 @@ public class Existencia {
     @ManyToOne
     @JoinColumn(name = "iddepo", referencedColumnName = "iddeposito") // Asegúrate de que idDeposito sea correcto
     private Deposito deposito;
+
+    public ExistenciaResponseDTO toDto(){
+        return ExistenciaResponseDTO.builder()
+                .cantidad(this.cantidad)
+                .nombreDeposito(this.deposito.getNombre())
+                .nombreRecurso(this.recurso.getNombre())
+                .build();
+    }
 }

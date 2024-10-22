@@ -9,7 +9,7 @@ public class EnvioMapper {
 
         return EnvioDTO.builder()
                 .idEnvio(envio.getIdEnvio())
-                .idEmpleado(envio.getIdEmpleado())
+                .idEmpleado(envio.getEmpleado().getIdEmpleado())
                 .fechaPreparacion(envio.getFechaPreparacion())
                 .detallesEnvioComputadora(envio.getDetallesEnvioComputadora())
                 .detallesEnvioRecurso(envio.getDetallesEnvioRecurso())
@@ -21,7 +21,6 @@ public class EnvioMapper {
 
         return Envio.builder()
                 .idEnvio(envioDTO.getIdEnvio())
-                .idEmpleado(envioDTO.getIdEmpleado())
                 .fechaPreparacion(envioDTO.getFechaPreparacion())
                 .detallesEnvioComputadora(envioDTO.getDetallesEnvioComputadora())
                 .detallesEnvioRecurso(envioDTO.getDetallesEnvioRecurso())
