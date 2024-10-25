@@ -1,19 +1,21 @@
 package com.example.demo.Envios.Envios.controller;
 
+import com.example.demo.Envios.Envios.domain.Envio;
+import com.example.demo.Envios.Envios.dto.EnvioDTO;
 import com.example.demo.Envios.Envios.dto.EnvioPostDTO;
 import com.example.demo.Envios.Envios.dto.EnvioResponseDTO;
+import com.example.demo.Envios.Envios.mapper.EnvioMapper;
+import com.example.demo.Envios.Envios.repository.EnvioRepository;
 import com.example.demo.Envios.Envios.service.EnvioService;
-import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(allowedHeaders = "*")
@@ -24,6 +26,8 @@ public class EnvioController {
 
     @Autowired
     public final EnvioService envioService;
+    @Autowired
+    private EnvioRepository envioRepository;
 
     // ------------------------------------- MÉTODOS GET -----------------------------------------------//
 
@@ -31,6 +35,17 @@ public class EnvioController {
     public ResponseEntity<List<EnvioResponseDTO>> getAll(){
         List<EnvioResponseDTO> envios = envioService.getAllEnvios();
         return ResponseEntity.ok(envios);
+    }
+
+    //Obtener un recurso en particular por ID
+    @GetMapping("/{id}")
+    public EnvioDTO getEnvioById(@PathVariable Long id) throws NotFoundException {
+        Optional<Envio> envio = envioRepository.findById(id);
+        if (envio.isEmpty()) {
+            throw new NotFoundException("No se encontró el envio solicitado");
+        } else {
+            return EnvioMapper.toDTO(envio.get());
+        }
     }
 
     // ------------------------------------- MÉTODOS POST -----------------------------------------------//
