@@ -1,6 +1,9 @@
 package com.example.demo.Recursos.service;
 
+import com.example.demo.Computadoras.domain.Computadora;
 import com.example.demo.Depositos.serivce.DepositoService;
+import com.example.demo.Envios.DetallesEnvioRecurso.domain.DetalleEnvioRecurso;
+import com.example.demo.Envios.DetallesEnvioRecurso.repository.DetalleEnvioRecursoRepository;
 import com.example.demo.Recursos.domain.Recurso;
 import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.Recursos.mapper.*;
@@ -25,6 +28,8 @@ public class RecursoService {
 
     @Autowired
     private final DepositoService depositoService;
+    @Autowired
+    private DetalleEnvioRecursoRepository detalleEnvioRecursoRepository;
 
     //Obtener todos los recursos de la BBDD
     public List<RecursoDTO> getAllRecursos() {
@@ -180,5 +185,18 @@ public class RecursoService {
 
     public List<RecursoDTO> getAllRecursosByActivo(Boolean activo){
         return recursoRepository.findByActivo(activo).stream().map(RecursoMapper::toDTO).toList();
+    }
+
+    @Transactional
+    public void actualizarEsDevuelto(Long idDetRecurso, Boolean esDevuelto) throws NotFoundException {
+        Optional<DetalleEnvioRecurso> detOptional = detalleEnvioRecursoRepository.findById(idDetRecurso);
+        if(detOptional.isPresent()) {
+            DetalleEnvioRecurso detRec = detOptional.get();
+            detRec.setEsDevuelto(esDevuelto);
+            detalleEnvioRecursoRepository.save(detRec);
+            return;
+        } else {
+            throw new NotFoundException("No se encontró el equipo");
+        }
     }
 }

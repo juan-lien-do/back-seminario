@@ -72,4 +72,18 @@ public class ExistenciasService {
             existenciasRepository.save(ex);
         }
     }
+
+    public void aumentarExistencias(Long idExistencia, Long cantidad) throws NotFoundException, BadRequestException {
+
+        Optional<Existencia> existenciaOptional = existenciasRepository.findById(idExistencia);
+
+        if (existenciaOptional.isEmpty()){
+            throw new NotFoundException("Existencia no encontrada.");
+        } else {
+            Existencia ex = existenciaOptional.get();
+            Long cantidadFinal = ex.getCantidad() + cantidad;
+            ex.setCantidad(cantidadFinal);
+            existenciasRepository.save(ex);
+        }
+    }
 }

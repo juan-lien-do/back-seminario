@@ -15,6 +15,7 @@ public class RecursoMapper {
                 .descripcion(recurso.getDescripcion())
                 .activo(recurso.getActivo())
                 .existencias(recurso.getExistencias())
+                .esDevuelto(recurso.getEsDevuelto())
                 .build();
     }
 
@@ -27,6 +28,7 @@ public class RecursoMapper {
                 .categoria(recursoDTO.getCategoria())
                 .descripcion(recursoDTO.getDescripcion())
                 .activo(recursoDTO.getActivo())
+                .esDevuelto(recursoDTO.getEsDevuelto())
                 .build();
     }
 }
