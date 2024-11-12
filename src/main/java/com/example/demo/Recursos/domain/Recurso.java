@@ -29,6 +29,9 @@ public class Recurso {
     @Column(name = "cantidad")
     private Long cantidad;
 
+    @Column(name = "cantidadCritica")
+    private Long cantidadCritica;
+
     @Column(name = "categoria")
     private Long categoria;
 

@@ -53,11 +53,14 @@ public class ExistenciasService {
     }
 
     // TODO !!!!!!!!!!!!
-    public void disminuirExistencias(ExistenciaRequestDTO existenciaRequestDTO) throws NotFoundException, BadRequestException {
+    public Long disminuirExistencias(ExistenciaRequestDTO existenciaRequestDTO) throws NotFoundException, BadRequestException {
 
 
         Long idRecurso = existenciaRequestDTO.getIdRecurso();
-        List<Existencia> existencias = existenciasRepository.findByIdrecurso(idRecurso);
+        Optional<Recurso> rec = recursoRepository.findById(idRecurso);
+        if (rec.isEmpty()) throw new NotFoundException("No se encontró el recurso");
+
+        List<Existencia> existencias = rec.get().getExistencias();
 
         List<Existencia> existenciasFiltradas = existencias.stream()
                 .filter(x -> Objects.equals(x.getDeposito().getIdDeposito(), existenciaRequestDTO.getIdDeposito())).toList();
@@ -71,5 +74,13 @@ public class ExistenciasService {
             ex.setCantidad(cantidadFinal);
             existenciasRepository.save(ex);
         }
+
+        // esto es para notificar si las cantidades andan bajas
+        Long cantidadTotal = 0L;
+        for (Existencia ex : existencias) {
+            cantidadTotal += ex.getCantidad();
+        }
+        if (rec.get().getCantidadCritica() > cantidadTotal) return 1L; // notificar
+        else return 0L;
     }
 }

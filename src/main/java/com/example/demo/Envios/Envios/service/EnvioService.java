@@ -199,15 +199,20 @@ public class EnvioService {
                 .idEstadoEnvio(idEstado)
                 .build();
 
+        String[] estadosPosibles = {"Pendiente", "En preparación",
+                "Enviado", "Entregado/Pendiente de devolucion",
+                "Devolucion parcial", "Devolucion completa", "Cancelado"};
+        String destinatario = envioOptional.get().getEmpleado().getNombre();
+        String nuevoEstado = estadosPosibles[(int)(idEstado - 1L)];
+
         // Guardar ambos cambios
         cambiosEstadoEnvioRepository.save(cev);
         cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
 
-        // Enviar notificación si el estado es 2
-        if (idEstado == 2) {
-            twilioNotificationService.notificarUsuario("+5493525413678");
-            twilioNotificationService.notificarUsuario("+5493586022582");
-        }
+        // Enviar notificación
+            twilioNotificationService.notificarUsuario("+5493525413678", nuevoEstado, destinatario);
+            twilioNotificationService.notificarUsuario("+5493586022582", nuevoEstado, destinatario);
+
     }
 
 

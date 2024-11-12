@@ -75,7 +75,7 @@ public class UsuarioService {
         else {
             String numero = usuario.get().getTelefono();
 
-            twilioNotificationService.notificarUsuario(numero);
+            twilioNotificationService.notificarUsuario(numero, "", "");
 
             return numero;
         }

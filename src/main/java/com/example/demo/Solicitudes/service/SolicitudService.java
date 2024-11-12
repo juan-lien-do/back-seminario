@@ -10,6 +10,7 @@ import com.example.demo.Solicitudes.repository.SolicitudRepository;
 import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.Usuarios.service.UsuarioService;
+import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class SolicitudService {
         return solicitudRepository.findAll().stream().map(SolicitudMapper::toDTOGet).toList();
     }
 
-    @Transactional()
+    @Transactional
     public Long create(SolicitudDTOPost solicitudDTOPost) throws NotFoundException {
         Optional<Usuario> usuario = usuarioRepository.findByNombre(solicitudDTOPost.getNombreUsuario());
         if (usuario.isEmpty()) throw new NotFoundException("No se encontró usuario");
@@ -47,6 +48,7 @@ public class SolicitudService {
                 .build();
 
         Solicitud persistSolicitud = solicitudRepository.save(soli);
+        System.out.println(persistSolicitud);
 
         List<DetalleSolicitud> detalleSolicituds = solicitudDTOPost.getDetallesSolicitud()
                 .stream().map((det) -> SolicitudMapper.fromDTOPost(det, persistSolicitud)).toList();
@@ -54,5 +56,19 @@ public class SolicitudService {
         detalleSolicitudRepository.saveAll(detalleSolicituds);
 
         return persistSolicitud.getIdSolicitud();
+    }
+
+    public Long incorporar(Long id) throws NotFoundException, BadRequestException{
+        Optional<Solicitud> soli = solicitudRepository.findById(id);
+        if (soli.isEmpty()) throw new NotFoundException("No se encontró la solicitud");
+        LocalDate fechaInc = LocalDate.now();
+
+        if (soli.get().getFechaIncorporacion() != null) throw new BadRequestException("Ya esta incorporada.");
+
+
+        soli.get().setFechaIncorporacion(fechaInc);
+
+        solicitudRepository.save(soli.get());
+        return soli.get().getIdSolicitud();
     }
 }
