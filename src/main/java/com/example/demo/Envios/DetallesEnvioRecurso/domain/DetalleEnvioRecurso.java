@@ -44,6 +44,9 @@ public class DetalleEnvioRecurso {
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
     private Envio envio;
 
+    @Column(name = "esdevuelto")
+    private Boolean esDevuelto;
+
     public DetalleEnvioRecursoResponseDTO toDetalleEnvioRecursoResponseDTO(){
         return DetalleEnvioRecursoResponseDTO.builder()
                 //.recursoDTO(RecursoMapper.toDTO(this.existencia.getRecurso()))

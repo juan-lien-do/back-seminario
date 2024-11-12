@@ -1,5 +1,10 @@
 package com.example.demo.Envios.Envios.controller;
 
+import com.example.demo.Computadoras.domain.Computadora;
+import com.example.demo.Computadoras.repository.ComputadoraRepository;
+import com.example.demo.Computadoras.service.ComputadoraService;
+import com.example.demo.Envios.DetallesEnvioComputadora.domain.DetalleEnvioComputadora;
+import com.example.demo.Envios.DetallesEnvioComputadora.repository.DetallesEnvioComputadoraRepository;
 import com.example.demo.Envios.Envios.dto.EnvioPostDTO;
 import com.example.demo.Envios.Envios.dto.EnvioResponseDTO;
 import com.example.demo.Envios.Envios.service.EnvioService;
@@ -14,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(allowedHeaders = "*")
@@ -24,6 +30,12 @@ public class EnvioController {
 
     @Autowired
     public final EnvioService envioService;
+    @Autowired
+    private ComputadoraService computadoraService;
+    @Autowired
+    private ComputadoraRepository computadoraRepository;
+    @Autowired
+    private DetallesEnvioComputadoraRepository detallesEnvioComputadoraRepository;
 
     // ------------------------------------- MÉTODOS GET -----------------------------------------------//
 
@@ -57,4 +69,26 @@ public class EnvioController {
         }
     }
 
+    //  TODO seguir creando función
+    @PutMapping("/devolver-Recurso/{idDetalle}")
+    public ResponseEntity<String> devolverRecurso(@PathVariable Long idDetalle){
+        return ResponseEntity.status(201).build();
+    }
+
+    //  TODO seguir creando función
+    @PutMapping("/devolver-Computadora/{idDetalle}")
+    public ResponseEntity<String> devolverComputadora(@PathVariable Long idDetalle){
+        try {
+            Optional<DetalleEnvioComputadora> detComp = detallesEnvioComputadoraRepository.findById(idDetalle);
+            if (detComp.isPresent()) {
+                Computadora computadora = detComp.get().getComputadora();
+                computadoraService.actualizarEnUso(computadora.getIdComputadora(), false);
+                return ResponseEntity.status(201).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Detalle no encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().header("ERROR", e.getMessage()).build();
+        }
+    }
 }

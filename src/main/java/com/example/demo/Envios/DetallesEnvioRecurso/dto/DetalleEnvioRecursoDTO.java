@@ -18,5 +18,5 @@ public class DetalleEnvioRecursoDTO {
     Long idRecurso;
     Long cantidad;
     Envio envio;
-
+    Boolean esDevuelto;
 }

@@ -2,6 +2,7 @@ package com.example.demo.Envios.Envios.service;
 
 import com.example.demo.Computadoras.domain.Computadora;
 import com.example.demo.Computadoras.repository.ComputadoraRepository;
+import com.example.demo.Computadoras.service.ComputadoraService;
 import com.example.demo.Empleados.domain.Empleado;
 import com.example.demo.Empleados.repository.EmpleadoRepository;
 import com.example.demo.Empleados.service.EmpleadoService;
@@ -65,6 +66,8 @@ public class EnvioService {
     private final ComputadoraRepository computadoraRepository;
     @Autowired
     private final TwilioNotificationService twilioNotificationService;
+    @Autowired
+    private ComputadoraService computadoraService;
 
     // ------------------------------------ MÉTODOS GET ------------------------------------------------------//
 
@@ -116,6 +119,8 @@ public class EnvioService {
                     .cantidad(derp.getCantidad())
                     .existencia(ex.get())
                     .recurso(ex.get().getRecurso())
+                    //TODO MOCKEADO PARA QUE NO SE ROMPA NADA XD
+                    .esDevuelto(false)
                     .build();
 
             existencias.add(ex.get());
@@ -126,6 +131,8 @@ public class EnvioService {
                 body.getDetallesEnvioComputadora()) {
             Optional<Computadora> compu = computadoraRepository.findById(decp.getIdComputadora());
             if (compu.isEmpty()) throw new NotFoundException("No se encontró computadora.");
+            //actualizar el "Estado" enUso del equipo
+            computadoraService.actualizarEnUso(compu.get().getIdComputadora(), true);
 
             DetalleEnvioComputadora dec = new DetalleEnvioComputadora();
             dec.setComputadora(compu.get());
@@ -204,7 +211,7 @@ public class EnvioService {
         cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
 
         // Enviar notificación si el estado es 2
-        if (idEstado == 2) {
+        if (idEstado == 2L) {
             twilioNotificationService.notificarUsuario("+5493525413678");
             twilioNotificationService.notificarUsuario("+5493586022582");
         }
