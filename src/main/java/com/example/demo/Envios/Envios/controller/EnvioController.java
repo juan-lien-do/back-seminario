@@ -84,7 +84,7 @@ public class EnvioController {
         }
     }
 
-    //  TODO seguir creando función
+    //  TODO se rompe porque no encuentra un esdevuelto, que no sé dónde carajo está
     @PutMapping("/devolver-Recurso/{idDetalle}")
     public ResponseEntity<String> devolverRecurso(@PathVariable Long idDetalle){
         try{
@@ -103,7 +103,7 @@ public class EnvioController {
         return ResponseEntity.status(201).build();
     }
 
-    //  TODO seguir creando función
+    //  TODO verificiar
     @PutMapping("/devolver-Computadora/{idDetalle}")
     public ResponseEntity<String> devolverComputadora(@PathVariable Long idDetalle){
         try {
