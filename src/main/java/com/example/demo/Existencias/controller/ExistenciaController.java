@@ -34,10 +34,10 @@ public class ExistenciaController {
     }
 
     @PostMapping("disminuir/")
-    public ResponseEntity<String> disminuir(@RequestBody ExistenciaRequestDTO existenciaRequestDTO){
+    public ResponseEntity<Long> disminuir(@RequestBody ExistenciaRequestDTO existenciaRequestDTO){
         try {
-            existenciasService.disminuirExistencias(existenciaRequestDTO);
-            return ResponseEntity.status(201).build();
+            Long rta = existenciasService.disminuirExistencias(existenciaRequestDTO);
+            return ResponseEntity.status(201).body(rta);
         } catch (NotFoundException e){
             return ResponseEntity.notFound().header("ERROR", e.getMessage()).build();
         } catch (BadRequestException e){
