@@ -1,10 +1,12 @@
 package com.example.demo.Empleados.domain;
 
 
+import com.example.demo.Envios.Envios.domain.Envio;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "empleados")
@@ -34,5 +36,8 @@ public class Empleado {
     private String ws;
     @Column(name = "deleteDate")
     private LocalDate deleteDate;
+
+    @OneToMany(mappedBy = "empleado", fetch = FetchType.LAZY)
+    public List<Envio> envios;
 
 }

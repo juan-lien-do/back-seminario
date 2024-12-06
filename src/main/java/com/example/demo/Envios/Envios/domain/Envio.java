@@ -30,14 +30,14 @@ public class Envio {
     @Column(name = "idenvio")
     private Long idEnvio;
 
-    //@Column(name = "idempleado")
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idempleado")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
     private Empleado empleado;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idUsuario")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
+
 
     @Column(name = "fechapreparacion")
     private LocalDate fechaPreparacion;

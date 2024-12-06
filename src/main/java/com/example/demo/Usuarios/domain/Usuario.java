@@ -1,7 +1,10 @@
 package com.example.demo.Usuarios.domain;
 
+import com.example.demo.Envios.Envios.domain.Envio;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +29,7 @@ public class Usuario {
     private Boolean isAdmin;
     @Column(name= "telefono")
     private String telefono;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    public List<Envio> envios;
 }
