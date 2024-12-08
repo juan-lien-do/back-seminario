@@ -11,8 +11,14 @@ import lombok.experimental.Accessors;
 @ToString
 public class UsuarioDTO {
     String nombre;
+    String apellido_usr;
+    String nombre_usr;
     String email;
+    String telefono;
     String password;
     Long id;
     Boolean isAdmin;
+    Boolean esActivo;
+    Boolean esDriver;
+    Boolean primerLogin;
 }
