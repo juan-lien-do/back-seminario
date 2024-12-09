@@ -10,6 +10,8 @@ import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
+import com.example.demo.notificaciones.services.EMailDetails;
+import com.example.demo.notificaciones.services.EMailServiceImpl;
 import com.example.demo.notificaciones.services.TwilioNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,12 +31,15 @@ public class UsuarioService {
     private final TwilioNotificationService twilioNotificationService;
     @Autowired
     private final JWTService jwtService;
+    @Autowired
+    private final EMailServiceImpl eMailService;
 
-    public UsuarioService(AuthenticationManager authManager, UsuarioRepository usuarioRepository, JWTService jwtService, TwilioNotificationService twilioNotificationService) {
+    public UsuarioService(AuthenticationManager authManager, UsuarioRepository usuarioRepository, JWTService jwtService, TwilioNotificationService twilioNotificationService, EMailServiceImpl eMailService) {
         this.authManager = authManager;
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
         this.twilioNotificationService = twilioNotificationService;
+        this.eMailService = eMailService;
     }
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -79,5 +84,15 @@ public class UsuarioService {
 
             return numero;
         }
+    }
+
+    public String enviarMail(){
+        // TODO Modifiquen esto de la forma en la que vean que es necesario
+        // esto es solo un ejemplo de como se utiliza
+        EMailDetails eMailDetails = new EMailDetails();
+        eMailDetails.setRecipient("emmanuelricardo.chaile@cba.gov.ar");
+        eMailDetails.setMsgBody("prueba");
+        eMailDetails.setSubject("prueba de mail");
+        return eMailService.enviarMailConAdjunto(eMailDetails);
     }
 }
