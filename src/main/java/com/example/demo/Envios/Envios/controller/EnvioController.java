@@ -110,6 +110,9 @@ public class EnvioController {
             Optional<DetalleEnvioComputadora> detComp = detallesEnvioComputadoraRepository.findById(idDetalle);
             if (detComp.isPresent()) {
                 Computadora computadora = detComp.get().getComputadora();
+                DetalleEnvioComputadora detalleEnvioComputadora = detComp.get();
+                detalleEnvioComputadora.setEsDevuelto(true);
+                detallesEnvioComputadoraRepository.save(detalleEnvioComputadora);
                 computadoraService.actualizarEnUso(computadora.getIdComputadora(), false);
                 return ResponseEntity.status(201).build();
             } else {
