@@ -11,5 +11,4 @@ import java.util.List;
 public interface RecursoRepository extends JpaRepository<Recurso, Long> {
     List<Recurso> findByCategoria(Long categoria);
     List<Recurso> findByActivo(Boolean activo);
-
 }

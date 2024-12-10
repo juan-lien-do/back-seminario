@@ -5,13 +5,12 @@ import lombok.experimental.Accessors;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Accessors(makeFinal = true)
 @ToString
-public class UsuarioDTOAfterLogin {
-    String nombre;
-    String token;
-    Boolean isAdmin;
-    Boolean primerLogin;
+@Accessors(makeFinal = true)
+public class UsuarioPassDTO {
+    private String nombre;
+    private String nuevaPassword;
 }

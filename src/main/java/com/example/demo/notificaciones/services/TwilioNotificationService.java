@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TwilioNotificationService {
-    public void notificarUsuario(String phoneNumber){
+    public void notificarUsuario(String phoneNumber, String nuevoEstado, String destinatario){
         TwilioConfig config = TwilioConfig.getInstance();
         Twilio.init(config.getACCOUNT_SID(), config.getAUTH_TOKEN());
         Message message = Message.creator(
                 new com.twilio.type.PhoneNumber("whatsapp:"+phoneNumber),
                 new com.twilio.type.PhoneNumber("whatsapp:"+config.getSENDER()),
-                "Se publicó un nuevo envío"
+                "Se actualizó el estado del envío: *" + nuevoEstado + "*, para el empleado: *" + destinatario + "* ."
         ).create();
 
     }
