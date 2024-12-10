@@ -5,6 +5,7 @@ import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
 import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.Usuarios.dto.UsuarioDTOBeforeLogin;
+import com.example.demo.Usuarios.dto.UsuarioRegisterDTO;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
@@ -38,11 +39,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuarios/register")
-    public ResponseEntity<UsuarioDTO> register(@RequestBody UsuarioDTO user) {
+    public ResponseEntity<String> register(@RequestBody UsuarioRegisterDTO user) {
         System.out.println(user.toString());
         try {
-            UsuarioDTO usuarioDTO = usuarioService.register(user);
-            return ResponseEntity.ok(usuarioDTO);
+            String msg = usuarioService.register(user);
+            return ResponseEntity.ok(msg);
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

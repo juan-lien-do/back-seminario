@@ -3,11 +3,10 @@ package com.example.demo.Usuarios.service;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.example.demo.Recursos.domain.Recurso;
-import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
 import com.example.demo.Usuarios.dto.UsuarioDTOBeforeLogin;
+import com.example.demo.Usuarios.dto.UsuarioRegisterDTO;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.Usuarios.domain.Usuario;
@@ -25,8 +24,6 @@ import org.springframework.security.core.Authentication;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class UsuarioService {
@@ -55,25 +52,31 @@ public class UsuarioService {
         return usuarioRepository.findAll().stream().map(UsuarioMapper::toDto).toList();
     }
 
-    public UsuarioDTO register(UsuarioDTO usuarioDTO) {
+    public String register(UsuarioRegisterDTO usuarioDTO) {
         String password = generarPassword();
+        Usuario user = new Usuario();
         LocalDateTime creacion = LocalDateTime.now();
-        usuarioDTO.setPassword(encoder.encode(password));
+        user.setPassword(encoder.encode(password));
         //A modo debug
-        System.out.println(usuarioDTO.getPassword());
-        usuarioDTO.setPrimerLogin(true);
-        usuarioDTO.setUltimaActualizacion(creacion);
-        usuarioDTO.setEsActivo(true);
-        usuarioDTO.setFechaCreacion(creacion);
+        System.out.println(user.getPassword());
+        user.setNombreUsuario(usuarioDTO.getNombre_usr());
+        user.setApellidoUsuario(usuarioDTO.getApellido_usr());
+        user.setObservaciones(usuarioDTO.getObservaciones());
+        user.setMail(usuarioDTO.getMail());
+        user.setTelefono(usuarioDTO.getTelefono());
+        user.setPrimerLogin(true);
+        user.setUltimaActualizacion(creacion);
+        user.setEsActivo(true);
+        user.setIsAdmin(false);
+        user.setFechaCreacion(creacion);
         String username = usuarioDTO.getApellido_usr() + usuarioDTO.getNombre_usr().charAt(0);
         //En mayúsculas
-        usuarioDTO.setNombre(username.toUpperCase());
+        user.setNombre(username.toUpperCase());
         //A modo debug
-        Usuario user = UsuarioMapper.toEntity(usuarioDTO);
         System.out.println(user);
         System.out.println("pass sin hashear:" + password);
-        Usuario usuarioGuardardo = usuarioRepository.save(user);
-        return UsuarioMapper.toDto(usuarioGuardardo);
+        usuarioRepository.save(user);
+        return ("El usuario" + user.getNombre() + "se creó con éxito");
     }
 
     public UsuarioDTOAfterLogin verify(UsuarioDTOBeforeLogin user) throws WrongCredentialsException {
