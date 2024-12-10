@@ -18,6 +18,7 @@ public class UsuarioMapper {
                 .esDriver(usuario.getIsDriver())
                 .telefono(usuario.getTelefono())
                 .esActivo(usuario.getEsActivo())
+                .primerLogin(usuario.getPrimerLogin())
                 //fechas
                 .fechaBaja(usuario.getFechaBaja())
                 .fechaCreacion(usuario.getFechaCreacion())
@@ -39,6 +40,7 @@ public class UsuarioMapper {
                 .telefono(user.getTelefono())
                 .esActivo(user.getEsActivo())
                 .fechaBaja(user.getFechaBaja())
+                .primerLogin(user.getPrimerLogin())
                 .fechaCreacion(user.getFechaCreacion())
                 .ultimaActualizacion(user.getUltimaActualizacion())
                 .observaciones(user.getObservaciones())
