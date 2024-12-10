@@ -15,4 +15,5 @@ public class DetalleEnvioRecursoResponseDTO {
     Long idDetalleRecurso;
     Long cantidad;
     ExistenciaResponseDTO existenciaDTO;
+    Boolean esDevuelto;
 }

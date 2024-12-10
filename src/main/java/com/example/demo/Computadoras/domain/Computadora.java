@@ -39,4 +39,7 @@ public class Computadora {
 
     @Column(name = "nrows", unique = true)
     private Long nroWs;
+
+    @Column(name = "enuso")
+    private Boolean enUso;
 }

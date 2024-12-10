@@ -16,6 +16,7 @@ public class ComputadoraMapper {
                 .esActivo(computadora.getEsActivo())
                 .esMasterizado(computadora.getEsMasterizado())
                 .nroWs(computadora.getNroWs())
+                .enUso(computadora.getEnUso())
                 .build();
     }
 
@@ -30,6 +31,7 @@ public class ComputadoraMapper {
                 .esActivo(depositoDTO.getEsActivo())
                 .esMasterizado(depositoDTO.getEsMasterizado())
                 .nroWs(depositoDTO.getNroWs())
+                .enUso(depositoDTO.getEnUso())
                 .build();
     }
 }

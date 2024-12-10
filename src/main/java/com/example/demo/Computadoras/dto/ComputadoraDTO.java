@@ -20,5 +20,5 @@ public class ComputadoraDTO {
     Boolean esActivo;
     Boolean esMasterizado;
     Long nroWs;
-
+    Boolean enUso;
 }

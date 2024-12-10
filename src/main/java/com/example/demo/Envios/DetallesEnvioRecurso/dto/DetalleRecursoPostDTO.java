@@ -13,4 +13,5 @@ public class DetalleRecursoPostDTO {
     Long cantidad;
     Long idRecurso;
     Long idExistencia;
+    Boolean esDevuelto;
 }

@@ -43,8 +43,8 @@ public class Recurso {
     @Column(name = "activo")
     private Boolean activo;
 
-
     @OneToMany(mappedBy = "recurso", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
     @JsonManagedReference
     //Borrar si se rompe todo xd, es para "rendimiento"
     @Fetch(FetchMode.JOIN)

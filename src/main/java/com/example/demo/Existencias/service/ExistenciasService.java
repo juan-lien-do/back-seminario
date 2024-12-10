@@ -83,4 +83,18 @@ public class ExistenciasService {
         if (rec.get().getCantidadCritica() > cantidadTotal) return 1L; // notificar
         else return 0L;
     }
+
+    public void aumentarExistencias(Long idExistencia, Long cantidad) throws NotFoundException, BadRequestException {
+
+        Optional<Existencia> existenciaOptional = existenciasRepository.findById(idExistencia);
+
+        if (existenciaOptional.isEmpty()){
+            throw new NotFoundException("Existencia no encontrada.");
+        } else {
+            Existencia ex = existenciaOptional.get();
+            Long cantidadFinal = ex.getCantidad() + cantidad;
+            ex.setCantidad(cantidadFinal);
+            existenciasRepository.save(ex);
+        }
+    }
 }

@@ -144,4 +144,18 @@ public class ComputadoraService {
         }
     }
 
+    @Transactional
+    //TODO función que actualice el enUso de una computadora
+    public void actualizarEnUso(Long idComputadora, Boolean enUso) throws NotFoundException, BadRequestException {
+        Optional<Computadora> computadoraOptional = computadoraRepository.findById(idComputadora);
+        if(computadoraOptional.isPresent()) {
+            Computadora computadora = computadoraOptional.get();
+            computadora.setEnUso(enUso);
+            computadoraRepository.save(computadora);
+            return;
+        } else {
+            throw new NotFoundException("No se encontró el equipo");
+        }
+    }
+
 }

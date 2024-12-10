@@ -20,4 +20,5 @@ public class RecursoDTO {
     String descripcion;
     Boolean activo;
     List existencias;
+    Boolean esDevuelto;
 }

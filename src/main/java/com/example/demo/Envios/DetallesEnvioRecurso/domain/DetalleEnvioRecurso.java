@@ -25,8 +25,6 @@ public class DetalleEnvioRecurso {
     @Column(name = "iddetalleR")
     private Long idDetalleRecurso;
 
-
-
     @Column(name = "cantidad")
     private Long cantidad;
 
@@ -44,12 +42,16 @@ public class DetalleEnvioRecurso {
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
     private Envio envio;
 
+    @Column(name = "es_devuelto")
+    private Boolean esDevuelto;
+
     public DetalleEnvioRecursoResponseDTO toDetalleEnvioRecursoResponseDTO(){
         return DetalleEnvioRecursoResponseDTO.builder()
                 //.recursoDTO(RecursoMapper.toDTO(this.existencia.getRecurso()))
                 .existenciaDTO(this.existencia.toDto())
                 .cantidad(this.cantidad)
                 .idDetalleRecurso(this.idDetalleRecurso)
+                .esDevuelto(this.esDevuelto)
                 .build();
     }
 }
