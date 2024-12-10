@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 @Accessors(makeFinal = true)
 @ToString
 public class UsuarioDTO {

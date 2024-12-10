@@ -13,4 +13,5 @@ public class UsuarioDTOAfterLogin {
     String nombre;
     String token;
     Boolean isAdmin;
+    Boolean primerLogin;
 }

@@ -1,5 +1,6 @@
 package com.example.demo.Usuarios.controller;
 
+import com.example.demo.Recursos.dto.RecursoDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
 import com.example.demo.Usuarios.domain.Usuario;
@@ -36,14 +37,40 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.getAll());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Usuario> register(@RequestBody UsuarioDTO user) {
-        System.out.println(user);
+    @PostMapping("/usuarios/register")
+    public ResponseEntity<UsuarioDTO> register(@RequestBody UsuarioDTO user) {
+        System.out.println(user.toString());
         try {
-            usuarioService.register(UsuarioMapper.toEntity(user));
-            return ResponseEntity.status(201).build();
+            UsuarioDTO usuarioDTO = usuarioService.register(user);
+            return ResponseEntity.ok(usuarioDTO);
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/usuarios/desactivar/{id}")
+    public ResponseEntity<RecursoDTO> deactivateById(@PathVariable Long id){
+        try {
+            if (usuarioService.logicDelete(id)) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().header("ERROR_MSG", e.getMessage()).build();
+        }
+    }
+
+    @PatchMapping("/usuarios/activar/{id}")
+    public ResponseEntity<RecursoDTO> activateById(@PathVariable Long id){
+        try {
+            if (usuarioService.logicUndelete(id)) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().header("ERROR_MSG", e.getMessage()).build();
         }
     }
 
@@ -65,7 +92,7 @@ public class UsuarioController {
         try {
             return ResponseEntity.status(201).body(usuarioService.verify(user));
         } catch (WrongCredentialsException e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
 
     }
