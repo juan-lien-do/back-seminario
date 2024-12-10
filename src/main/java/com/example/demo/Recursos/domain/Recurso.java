@@ -38,9 +38,6 @@ public class Recurso {
     @Column(name = "activo")
     private Boolean activo;
 
-    @Column(name = "esdevuelto")
-    private Boolean esDevuelto;
-
     @OneToMany(mappedBy = "recurso")
     @JsonManagedReference
     private List<Existencia> existencias;

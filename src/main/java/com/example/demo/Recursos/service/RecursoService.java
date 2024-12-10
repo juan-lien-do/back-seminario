@@ -188,11 +188,11 @@ public class RecursoService {
     }
 
     @Transactional
-    public void actualizarEsDevuelto(Long idDetRecurso, Boolean esDevuelto) throws NotFoundException {
+    public void actualizarEsDevuelto(Long idDetRecurso, Boolean es_devuelto) throws NotFoundException {
         Optional<DetalleEnvioRecurso> detOptional = detalleEnvioRecursoRepository.findById(idDetRecurso);
         if(detOptional.isPresent()) {
             DetalleEnvioRecurso detRec = detOptional.get();
-            detRec.setEsDevuelto(esDevuelto);
+            detRec.setEsDevuelto(es_devuelto);
             detalleEnvioRecursoRepository.save(detRec);
             return;
         } else {

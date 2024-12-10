@@ -85,7 +85,7 @@ public class EnvioController {
     }
 
     //  TODO se rompe porque no encuentra un esdevuelto, que no sé dónde carajo está
-    @PutMapping("/devolver-Recurso/{idDetalle}")
+    @PutMapping("/devolver-recurso/{idDetalle}")
     public ResponseEntity<String> devolverRecurso(@PathVariable Long idDetalle){
         try{
             Optional<DetalleEnvioRecurso> detRecurso = detalleEnvioRecursoRepository.findById(idDetalle);

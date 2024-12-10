@@ -29,6 +29,9 @@ public class DetalleEnvioComputadora {
     @JoinColumn(name = "idcomputadora")
     private Computadora computadora;
 
+    @Column(name = "es_devuelto")
+    private Boolean esDevuelto;
+
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
