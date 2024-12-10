@@ -69,9 +69,9 @@ public class UsuarioService {
         user.setEsActivo(true);
         user.setIsAdmin(false);
         user.setFechaCreacion(creacion);
-        String username = usuarioDTO.getApellido_usr() + usuarioDTO.getNombre_usr().charAt(0);
+        String username = (usuarioDTO.getApellido_usr() + usuarioDTO.getNombre_usr().charAt(0)).toUpperCase();
         //En mayúsculas
-        user.setNombre(username.toUpperCase());
+        user.setNombre(username);
         //A modo debug
         System.out.println(user);
         System.out.println("pass sin hashear:" + password);
