@@ -9,6 +9,7 @@ import com.example.demo.Usuarios.mapper.UsuarioMapper;
 import com.example.demo.Usuarios.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,11 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @PostMapping("/usuarios/enviar-mail/")
+    public ResponseEntity<String> enviarMail(){
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.enviarMail());
     }
 
 }
