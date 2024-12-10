@@ -1,11 +1,8 @@
 package com.example.demo.Usuarios.controller;
 
 import com.example.demo.Recursos.dto.RecursoDTO;
-import com.example.demo.Usuarios.dto.UsuarioDTO;
-import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
+import com.example.demo.Usuarios.dto.*;
 import com.example.demo.Usuarios.domain.Usuario;
-import com.example.demo.Usuarios.dto.UsuarioDTOBeforeLogin;
-import com.example.demo.Usuarios.dto.UsuarioRegisterDTO;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
@@ -101,7 +98,16 @@ public class UsuarioController {
     @PostMapping("/usuarios/enviar-mail/")
     public ResponseEntity<String> enviarMail(){
         String email = "3mmanuelch@gmail.com", body = "Prueba";
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.enviarMail(email, body));
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.enviarMail(email, body, "prueba email"));
     }
 
+    @PutMapping("/usuarios/{id}")
+    public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody UsuarioModificacionDTO user) {
+        try {
+            UsuarioDTO usuarioDTO = usuarioService.update(id, user);
+            return ResponseEntity.ok(usuarioDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

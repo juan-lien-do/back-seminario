@@ -3,8 +3,6 @@ package com.example.demo.Usuarios.dto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
-
 @Builder
 @AllArgsConstructor
 @Getter
@@ -12,11 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(makeFinal = true)
 @ToString
-public class UsuarioRegisterDTO {
+public class UsuarioModificacionDTO {
         String nombre_usr;
         String apellido_usr;
         String cuil;
         String observaciones;
         String mail;
         String telefono;
+        Boolean isAdmin;
+        Boolean isDriver;
 }

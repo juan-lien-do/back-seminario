@@ -3,13 +3,11 @@ package com.example.demo.Usuarios.service;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.example.demo.Usuarios.dto.UsuarioDTO;
-import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
-import com.example.demo.Usuarios.dto.UsuarioDTOBeforeLogin;
-import com.example.demo.Usuarios.dto.UsuarioRegisterDTO;
+import com.example.demo.Usuarios.dto.*;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.Usuarios.domain.Usuario;
+import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
 import com.example.demo.notificaciones.services.EMailDetails;
@@ -52,7 +50,12 @@ public class UsuarioService {
         return usuarioRepository.findAll().stream().map(UsuarioMapper::toDto).toList();
     }
 
-    public String register(UsuarioRegisterDTO usuarioDTO) {
+    public String register(UsuarioRegisterDTO usuarioDTO) throws BadRequestException {
+
+        if(usuarioRepository.existsByCuil(usuarioDTO.getCuil())){
+            throw new BadRequestException("El cuil ya se encuentra registrado");
+        }
+
         String password = generarPassword();
         Usuario user = new Usuario();
         LocalDateTime creacion = LocalDateTime.now();
@@ -64,6 +67,7 @@ public class UsuarioService {
         user.setObservaciones(usuarioDTO.getObservaciones());
         user.setMail(usuarioDTO.getMail());
         user.setTelefono(usuarioDTO.getTelefono());
+        user.setCuil(usuarioDTO.getCuil());
         user.setPrimerLogin(true);
         user.setUltimaActualizacion(creacion);
         user.setEsActivo(true);
@@ -77,7 +81,8 @@ public class UsuarioService {
         System.out.println("pass sin hashear:" + password);
         usuarioRepository.save(user);
         String body = "Usuario: " + username + " - " + "Contraseña temporal: " + password;
-        enviarMail(user.getMail(), body);
+        String subject = "Usuario nuevo, bienvenido a Almacen IT";
+        enviarMail(user.getMail(), body, subject);
         return ("El usuario " + user.getNombre() + " se creó con éxito");
     }
 
@@ -151,17 +156,39 @@ public class UsuarioService {
         }
     }
 
-    public String enviarMail(String email, String body){
+    public UsuarioDTO update(Long id, UsuarioModificacionDTO usuarioDTO) throws NotFoundException {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            usuario.setNombreUsuario(usuarioDTO.getNombre_usr());
+            usuario.setCuil(usuarioDTO.getCuil());
+            usuario.setApellidoUsuario(usuarioDTO.getApellido_usr());
+            usuario.setObservaciones(usuarioDTO.getObservaciones());
+            usuario.setMail(usuarioDTO.getMail());
+            usuario.setTelefono(usuarioDTO.getTelefono());
+            usuario.setIsAdmin(usuarioDTO.getIsAdmin());
+            usuario.setIsDriver(usuarioDTO.getIsDriver());
+            usuario.setUltimaActualizacion(LocalDateTime.now());
+            usuarioRepository.save(usuario);
+            return UsuarioMapper.toDto(usuario);
+        } else {
+            throw new NotFoundException("No existe el usuario");
+        }
+    }
+
+    //Funciones extra
+
+    public String enviarMail(String email, String body, String subject){
         // TODO Modifiquen esto de la forma en la que vean que es necesario
         // esto es solo un ejemplo de como se utiliza
         EMailDetails eMailDetails = new EMailDetails();
         eMailDetails.setRecipient(email);
         eMailDetails.setMsgBody(body);
-        eMailDetails.setSubject("Usuario Nuevo");
+        eMailDetails.setSubject(subject);
         return eMailService.enviarMailConAdjunto(eMailDetails);
     }
 
-    //Funciones extra
+
     public String generarPassword() {
         Random random = new Random();
 

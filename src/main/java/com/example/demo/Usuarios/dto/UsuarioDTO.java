@@ -16,9 +16,9 @@ public class UsuarioDTO {
     String nombre;
     String apellido_usr;
     String nombre_usr;
+    String cuil;
     String email;
     String telefono;
-    String password;
     Long id;
     Boolean isAdmin;
     Boolean esActivo;
