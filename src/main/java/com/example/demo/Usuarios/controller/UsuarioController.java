@@ -110,4 +110,14 @@ public class UsuarioController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PatchMapping("/usuarios/actualizar_contraseña")
+    public ResponseEntity<String> changePassword(@RequestBody UsuarioPassDTO user) {
+        try {
+            String msg = usuarioService.changePassword(user);
+            return ResponseEntity.ok(msg);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

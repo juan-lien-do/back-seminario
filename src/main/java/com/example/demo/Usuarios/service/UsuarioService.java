@@ -1,5 +1,7 @@
 package com.example.demo.Usuarios.service;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,6 +24,7 @@ import org.springframework.security.core.Authentication;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class UsuarioService {
@@ -176,6 +179,35 @@ public class UsuarioService {
         }
     }
 
+    public String changePassword(@RequestBody UsuarioPassDTO usuarioPassDTO) throws NotFoundException {
+
+        if(!validarPassword(usuarioPassDTO.getNuevaPassword())){
+            return "Contraseña inválida, verifique que tenga al menos 6 caracteres, una mayúscula" +
+                    ", un carácter especial y un dígito";
+        }
+
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByNombre(usuarioPassDTO.getNombre());
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            //Seteo de nueva clave hasheada
+            usuario.setPassword(encoder.encode(usuarioPassDTO.getNuevaPassword()));
+            //Ultima modificacion del user
+            usuario.setUltimaActualizacion(LocalDateTime.now());
+            //al loguerse y garantizar el cambio de la clave, deja de ser primer logueo
+            usuario.setPrimerLogin(false);
+            //Modo debug
+            System.out.println("Nueva pass: " + usuarioPassDTO.getNuevaPassword());
+            //Guardar
+            usuarioRepository.save(usuario);
+            //Enviar email de cambio exitoso
+            enviarMail(usuario.getMail(), "Su clave fue modificada con éxito el " + LocalDateTime.now(), "Modificacion de Clave");
+            //Retorno de mensaje para modificacion exitosa
+            return "Clave modificada con éxito";
+        } else {
+            throw new NotFoundException("No existe el usuario");
+        }
+    }
+
     //Funciones extra
 
     public String enviarMail(String email, String body, String subject){
@@ -223,5 +255,15 @@ public class UsuarioService {
         }
 
         return finalPassword.toString();
+    }
+
+    public Boolean validarPassword(String password) {
+        if(password.length() < 6) {
+            return false;
+        }
+        Boolean poseeMayus = password.chars().anyMatch(Character::isUpperCase);
+        Boolean poseeNumeros = password.chars().anyMatch(Character::isDigit);
+        Boolean poseeSpecial = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
+        return poseeMayus && poseeNumeros && poseeSpecial;
     }
 }
