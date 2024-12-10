@@ -76,7 +76,9 @@ public class UsuarioService {
         System.out.println(user);
         System.out.println("pass sin hashear:" + password);
         usuarioRepository.save(user);
-        return ("El usuario" + user.getNombre() + "se creó con éxito");
+        String body = "Usuario: " + username + " - " + "Contraseña temporal: " + password;
+        enviarMail(user.getMail(), body);
+        return ("El usuario " + user.getNombre() + " se creó con éxito");
     }
 
     public UsuarioDTOAfterLogin verify(UsuarioDTOBeforeLogin user) throws WrongCredentialsException {
@@ -149,13 +151,13 @@ public class UsuarioService {
         }
     }
 
-    public String enviarMail(){
+    public String enviarMail(String email, String body){
         // TODO Modifiquen esto de la forma en la que vean que es necesario
         // esto es solo un ejemplo de como se utiliza
         EMailDetails eMailDetails = new EMailDetails();
-        eMailDetails.setRecipient("emmanuelricardo.chaile@cba.gov.ar");
-        eMailDetails.setMsgBody("prueba");
-        eMailDetails.setSubject("prueba de mail");
+        eMailDetails.setRecipient(email);
+        eMailDetails.setMsgBody(body);
+        eMailDetails.setSubject("Usuario Nuevo");
         return eMailService.enviarMailConAdjunto(eMailDetails);
     }
 

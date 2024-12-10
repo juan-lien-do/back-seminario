@@ -100,7 +100,8 @@ public class UsuarioController {
 
     @PostMapping("/usuarios/enviar-mail/")
     public ResponseEntity<String> enviarMail(){
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.enviarMail());
+        String email = "3mmanuelch@gmail.com", body = "Prueba";
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.enviarMail(email, body));
     }
 
 }
