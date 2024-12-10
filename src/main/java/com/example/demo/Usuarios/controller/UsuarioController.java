@@ -3,6 +3,7 @@ package com.example.demo.Usuarios.controller;
 import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
 import com.example.demo.Usuarios.domain.Usuario;
+import com.example.demo.Usuarios.dto.UsuarioDTOBeforeLogin;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.WrongCredentialsException;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
@@ -59,7 +60,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UsuarioDTOAfterLogin> login(@RequestBody UsuarioDTO user) {
+    public ResponseEntity<UsuarioDTOAfterLogin> login(@RequestBody UsuarioDTOBeforeLogin user) {
 
         try {
             return ResponseEntity.status(201).body(usuarioService.verify(user));

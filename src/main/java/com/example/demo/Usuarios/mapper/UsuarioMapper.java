@@ -3,6 +3,8 @@ package com.example.demo.Usuarios.mapper;
 import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.domain.Usuario;
 
+import java.time.LocalDateTime;
+
 public class UsuarioMapper {
     public static UsuarioDTO toDto(Usuario usuario){
         return UsuarioDTO.builder()
@@ -16,6 +18,11 @@ public class UsuarioMapper {
                 .esDriver(usuario.getIsDriver())
                 .telefono(usuario.getTelefono())
                 .esActivo(usuario.getEsActivo())
+                //fechas
+                .fechaBaja(usuario.getFechaBaja())
+                .fechaCreacion(usuario.getFechaCreacion())
+                .ultimaActualizacion(usuario.getUltimaActualizacion())
+                .observaciones(usuario.getObservaciones())
                 .build();
     }
 
@@ -31,6 +38,10 @@ public class UsuarioMapper {
                 .isDriver(user.getEsDriver())
                 .telefono(user.getTelefono())
                 .esActivo(user.getEsActivo())
+                .fechaBaja(user.getFechaBaja())
+                .fechaCreacion(user.getFechaCreacion())
+                .ultimaActualizacion(user.getUltimaActualizacion())
+                .observaciones(user.getObservaciones())
                 .build();
     }
 }

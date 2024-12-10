@@ -3,6 +3,8 @@ package com.example.demo.Usuarios.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -37,4 +39,13 @@ public class Usuario {
     private String telefono;
     @Column(name = "primer_login")
     private Boolean primerLogin;
+    @Column(name = "observaciones")
+    private String observaciones;
+    @Column(name = "fecha_baja")
+    private LocalDateTime fechaBaja;
+    @Column(name = "fecha_creacion")
+    private LocalDateTime fechaCreacion;
+    @Column(name = "ultima_actualizacion")
+    private LocalDateTime ultimaActualizacion;
+
 }

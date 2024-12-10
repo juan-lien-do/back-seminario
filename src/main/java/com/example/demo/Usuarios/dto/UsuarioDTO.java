@@ -3,6 +3,8 @@ package com.example.demo.Usuarios.dto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor
 @Getter
@@ -21,4 +23,9 @@ public class UsuarioDTO {
     Boolean esActivo;
     Boolean esDriver;
     Boolean primerLogin;
+    String observaciones;
+    //Fechas
+    LocalDateTime fechaBaja;
+    LocalDateTime ultimaActualizacion;
+    LocalDateTime fechaCreacion;
 }

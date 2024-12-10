@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.example.demo.Usuarios.dto.UsuarioDTO;
 import com.example.demo.Usuarios.dto.UsuarioDTOAfterLogin;
+import com.example.demo.Usuarios.dto.UsuarioDTOBeforeLogin;
 import com.example.demo.Usuarios.mapper.UsuarioMapper;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.Usuarios.domain.Usuario;
@@ -55,7 +56,7 @@ public class UsuarioService {
         return user;
     }
 
-    public UsuarioDTOAfterLogin verify(UsuarioDTO user) throws WrongCredentialsException {
+    public UsuarioDTOAfterLogin verify(UsuarioDTOBeforeLogin user) throws WrongCredentialsException {
         Optional<Usuario> usuario = usuarioRepository.findByNombre(user.getNombre());
         if (usuario.isEmpty()) throw new WrongCredentialsException("Wrong credentials");
 
