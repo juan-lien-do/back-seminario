@@ -94,7 +94,8 @@ public class UsuarioService {
         if (usuario.isEmpty()) throw new WrongCredentialsException("Wrong credentials");
 
         LocalDateTime ultimaAct = usuario.get().getUltimaActualizacion();
-        if(usuario.get().getPrimerLogin() && ultimaAct.isAfter(ultimaAct.plusMinutes(30))) {
+        //Verificación para el primer logueo
+        if(usuario.get().getPrimerLogin() && ultimaAct.isAfter(ultimaAct.plusMinutes(15))) {
             throw new WrongCredentialsException("Contraseña expirada");
         }
 
@@ -203,6 +204,27 @@ public class UsuarioService {
             enviarMail(usuario.getMail(), "Su clave fue modificada con éxito el " + LocalDateTime.now(), "Modificacion de Clave");
             //Retorno de mensaje para modificacion exitosa
             return "Clave modificada con éxito";
+        } else {
+            throw new NotFoundException("No existe el usuario");
+        }
+    }
+
+    @Transactional
+    public String resetPassword(Long id) throws NotFoundException {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            String password = generarPassword();
+            usuario.setPassword(encoder.encode(password));
+            usuario.setUltimaActualizacion(LocalDateTime.now());
+            usuario.setPrimerLogin(true);
+            usuarioRepository.save(usuario);
+            String body = "Usuario: " + usuario.getNombre() + " - " + "Contraseña temporal: " + password + "\n" +
+                    "Dispone de 15 minutos para ingresar y cambiar su contraseña, en caso contrario comunicarse con " +
+                    "Administración nuevamente";
+            String subject = "Reseteo de contraseña exitoso";
+            enviarMail(usuario.getMail(), body, subject);
+            return ("El usuario " + usuario.getNombre() + " se creó con éxito");
         } else {
             throw new NotFoundException("No existe el usuario");
         }
