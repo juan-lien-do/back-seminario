@@ -120,4 +120,14 @@ public class UsuarioController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PatchMapping("/usuarios/blanquear-contraseña/{id}")
+    public ResponseEntity<String> resetarPassword(@PathVariable Long id) {
+        try {
+            String msg = usuarioService.resetPassword(id);
+            return ResponseEntity.ok(msg);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
