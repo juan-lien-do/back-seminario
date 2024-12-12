@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Builder
@@ -16,7 +17,7 @@ import java.util.Date;
 
 public class CambioEstadoDTO {
     Long idCambioEstado;
-    LocalDate fechaInicio;
-    LocalDate fechaFin;
+    LocalDateTime fechaInicio;
+    LocalDateTime fechaFin;
     Long idEstadoEnvio;
 }

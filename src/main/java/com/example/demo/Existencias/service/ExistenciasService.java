@@ -6,13 +6,16 @@ import com.example.demo.Existencias.domain.Existencia;
 import com.example.demo.Existencias.dto.ExistenciaRequestDTO;
 import com.example.demo.Existencias.repository.ExistenciasRepository;
 import com.example.demo.Recursos.domain.Recurso;
+import com.example.demo.Recursos.domain.RegistroIncorporacion;
 import com.example.demo.Recursos.repository.RecursoRepository;
+import com.example.demo.Recursos.repository.RegistroIncorporacionRepository;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +29,8 @@ public class ExistenciasService {
     private final RecursoRepository recursoRepository;
     @Autowired
     private final DepositoRepository depositoRepository;
+    @Autowired
+    private final RegistroIncorporacionRepository registroIncorporacionRepository;
 
     public void incorporarExistencias(ExistenciaRequestDTO existenciaRequestDTO) throws NotFoundException {
         Long idRecurso = existenciaRequestDTO.getIdRecurso();
@@ -95,6 +100,15 @@ public class ExistenciasService {
             Long cantidadFinal = ex.getCantidad() + cantidad;
             ex.setCantidad(cantidadFinal);
             existenciasRepository.save(ex);
+            // aca registramos la incorporacion de recursos
+            // no lo puse en los que son de disminuir.
+            RegistroIncorporacion reg = RegistroIncorporacion.builder()
+                    .fechaInc(LocalDate.now())
+                    .cantidad(cantidad)
+                    .idRecurso(ex.getRecurso().getId())
+                    .build();
+
+            registroIncorporacionRepository.save(reg);
         }
     }
 }

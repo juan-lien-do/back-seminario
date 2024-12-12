@@ -67,4 +67,7 @@ public class Envio {
                 .detallesEnvioRecurso(this.detallesEnvioRecurso.stream().map(DetalleEnvioRecurso::toDetalleEnvioRecursoResponseDTO).toList())
                 .build();
     }
+
+    // TODO funcion para calcular tiempo por estado
+    //public Float calcularTiempo
 }
