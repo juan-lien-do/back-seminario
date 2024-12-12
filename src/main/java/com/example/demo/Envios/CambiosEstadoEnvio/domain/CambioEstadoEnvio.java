@@ -8,6 +8,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,12 +41,29 @@ public class CambioEstadoEnvio {
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
     private Envio envio;
 
-    public CambioEstadoDTO toDTO(){
+    public CambioEstadoDTO toDTO() {
         return CambioEstadoDTO.builder()
                 .idEstadoEnvio(this.idEstadoEnvio)
                 .fechaInicio(this.fechaInicio)
                 .fechaFin(this.fechaFin)
                 .idCambioEstado(this.idCambioEstado)
                 .build();
+    }
+
+    public Boolean esDeProcesamiento() {
+        return idEstadoEnvio == 1L || idEstadoEnvio == 2L || idEstadoEnvio == 3L || idEstadoEnvio == 9L || idEstadoEnvio == 8L;
+    }
+
+    public Float calcularTiempoProcesamiento() {
+        if (esDeProcesamiento()) return calcularTiempo();
+        else return 0f;
+    }
+
+    public Float calcularTiempo(){
+        return (float) ChronoUnit.HOURS.between(fechaInicio, fechaFin != null ? fechaFin : LocalDateTime.now());
+    }
+
+    public Boolean sosEstado(Long estado){
+        return Objects.equals(estado, idEstadoEnvio);
     }
 }
