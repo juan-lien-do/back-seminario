@@ -36,6 +36,7 @@ import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,8 +101,9 @@ public class EnvioService {
         if (usuario.isEmpty()) throw new NotFoundException("No se encontró usuario");
 
         LocalDate fechaActual = LocalDate.now();
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
         CambioEstadoEnvio cev = CambioEstadoEnvio.builder()
-                .fechaInicio(fechaActual)
+                .fechaInicio(fechaHoraActual)
                 .idEstadoEnvio(1l)
                 .build();
 
@@ -195,14 +197,15 @@ public class EnvioService {
                 .orElseThrow(() -> new NotFoundException("No hay cambio de estado sin fecha de finalización."));
 
         LocalDate actual = LocalDate.now();
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
 
         // Actualizar fechaFin del último cambio de estado
-        cev.setFechaFin(actual);
+        cev.setFechaFin(fechaHoraActual);
 
         // Crear un nuevo cambio de estado
         CambioEstadoEnvio cambioEstadoEnvio = CambioEstadoEnvio.builder()
                 .envio(envioOptional.get())
-                .fechaInicio(actual)
+                .fechaInicio(fechaHoraActual)
                 .idEstadoEnvio(idEstado)
                 .build();
 

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,10 +26,10 @@ public class CambioEstadoEnvio {
     private Long idCambioEstado;
 
     @Column(name = "fechainicio")
-    private LocalDate fechaInicio;
+    private LocalDateTime fechaInicio;
 
     @Column(name = "fechafin")
-    private LocalDate fechaFin;
+    private LocalDateTime fechaFin;
 
     @Column(name = "idestadoenvio")
     private Long idEstadoEnvio;
