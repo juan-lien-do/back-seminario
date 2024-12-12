@@ -2,8 +2,12 @@ package com.example.demo.Reportes.service;
 
 import com.example.demo.Envios.Envios.domain.Envio;
 import com.example.demo.Envios.Envios.repository.EnvioRepository;
+import com.example.demo.Existencias.domain.Existencia;
+import com.example.demo.Recursos.domain.Recurso;
 import com.example.demo.Recursos.domain.RegistroIncorporacion;
+import com.example.demo.Recursos.repository.RecursoRepository;
 import com.example.demo.Recursos.repository.RegistroIncorporacionRepository;
+import com.example.demo.Reportes.dto.ItemCriticoDTO;
 import com.example.demo.Reportes.dto.ReporteCompletoDTO;
 import lombok.AllArgsConstructor;
 import org.antlr.v4.runtime.misc.Pair;
@@ -20,9 +24,11 @@ import java.util.*;
 @AllArgsConstructor
 public class ReportesService {
     @Autowired
-    private EnvioRepository envioRepository;
+    private final EnvioRepository envioRepository;
     @Autowired
-    private RegistroIncorporacionRepository registroIncorporacionRepository;
+    private final RegistroIncorporacionRepository registroIncorporacionRepository;
+    @Autowired
+    private final RecursoRepository recursoRepository;
 
     public ReporteCompletoDTO conseguirReporteCompleto(LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
 
@@ -102,11 +108,17 @@ public class ReportesService {
             long cantidad = 0L;
 
             for (Envio env : enviosSinCancelar) {
-                cantidad += 1L;
-                acumulado += env.calcularTiempoDeProcesamiento();
-            }
+                if (YearMonth.from(env.getFechaPreparacion()).compareTo(mes) == 0){
+                    cantidad += 1L;
+                    acumulado += env.calcularTiempoDeProcesamiento();
+                }
 
-            tiemposPromedioProcesamiento.add(cantidad / (float) acumulado);
+            }
+            if (cantidad == 0L){
+                tiemposPromedioProcesamiento.add(0f);
+            } else {
+                tiemposPromedioProcesamiento.add((float) acumulado / cantidad);
+            }
             //continuar
         }
 
@@ -134,7 +146,11 @@ public class ReportesService {
                 cantidad += tEnvio == 0f ? 0L : 1L;
             }
 
-            tiempoPorEstado.add(tiempo / (float) cantidad);
+            if (cantidad == 0L ){
+                tiempoPorEstado.add(0f);
+            } else {
+                tiempoPorEstado.add(tiempo / (float) cantidad);
+            }
         }
 
         builder.estados(estados);
@@ -165,7 +181,7 @@ public class ReportesService {
         elementos.add("All In One");
         cantidadElem.add(cantAIO);
 
-        // TODO contar recursos
+        // contar recursos
         Long cantPerif = 0L;
         for (Envio env : enviosSinCancelar){
             cantPerif += env.contarPerifericos();
@@ -187,7 +203,27 @@ public class ReportesService {
     }
 
 
+    public List<ItemCriticoDTO> conseguirItemsCriticos() {
+        List<Recurso> recursos = recursoRepository.findByActivo(true);
+        if (recursos == null || recursos.isEmpty()) return new ArrayList<>();
+
+        List<ItemCriticoDTO> listaItems = new ArrayList<>();
+
+        for (Recurso rec :
+                recursos) {
+            Long cantidadRecurso = rec.getExistencias().stream().mapToLong(Existencia::getCantidad).sum();
+            if(cantidadRecurso <= rec.getCantidadCritica()){
+                listaItems.add(
+                        ItemCriticoDTO.builder()
+                                .nombre(rec.getNombre())
+                                .cantidadCritica(rec.getCantidadCritica())
+                                .cantidad(cantidadRecurso)
+                                .build()
+                );
+            }
+        }
 
 
-
+        return listaItems;
+    }
 }
