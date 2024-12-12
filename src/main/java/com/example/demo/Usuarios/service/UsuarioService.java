@@ -109,6 +109,7 @@ public class UsuarioService {
                     .token(jwtService.generateToken(usuario.get().getNombre()))
                     .nombre(usuario.get().getNombre())
                     .primerLogin(usuario.get().getPrimerLogin())
+                    .fechaUltimaModificacion(usuario.get().getUltimaActualizacion())
                     .isAdmin(usuario.get().getIsAdmin()) // esto es un hardcodeo terriiiiible
                     .build();
             //Setear primerLogin del usuario como false -- NO, ESTA LÓGICA VA DESPUÉS QUE SE CAMBIE LA CONTRASEÑA
