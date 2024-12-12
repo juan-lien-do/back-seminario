@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface EnvioRepository extends JpaRepository<Envio, Long> {
-    List<Envio> findByDateBetween(LocalDate fechaInicio, LocalDate fechaFin);
+    List<Envio> findByFechaPreparacionBetween(LocalDate fechaInicio, LocalDate fechaFin);
 
 }

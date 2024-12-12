@@ -1,9 +1,7 @@
 package com.example.demo.Reportes.service;
 
-import com.example.demo.Envios.CambiosEstadoEnvio.domain.CambioEstadoEnvio;
 import com.example.demo.Envios.Envios.domain.Envio;
 import com.example.demo.Envios.Envios.repository.EnvioRepository;
-import com.example.demo.Envios.Envios.service.EnvioService;
 import com.example.demo.Recursos.domain.RegistroIncorporacion;
 import com.example.demo.Recursos.repository.RegistroIncorporacionRepository;
 import com.example.demo.Reportes.dto.ReporteCompletoDTO;
@@ -33,8 +31,8 @@ public class ReportesService {
         builder.fechaInicio(fechaInicio);
 
         // primera parte: listado tranqui
-        List<Envio> envios = envioRepository.findByDateBetween(fechaInicio, fechaFin);
-        List<RegistroIncorporacion> registroIncorporaciones = registroIncorporacionRepository.findByDateBetween(fechaInicio, fechaFin);
+        List<Envio> envios = envioRepository.findByFechaPreparacionBetween(fechaInicio, fechaFin);
+        List<RegistroIncorporacion> registroIncorporaciones = registroIncorporacionRepository.findByFechaIncBetween(fechaInicio, fechaFin);
 
         Long pedidosAtendidos = (long) envios.size();
 

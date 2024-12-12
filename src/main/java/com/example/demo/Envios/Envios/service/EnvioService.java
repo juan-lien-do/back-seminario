@@ -211,7 +211,7 @@ public class EnvioService {
 
         String[] estadosPosibles = {"Pendiente", "En preparación",
                 "Enviado", "Entregado/Pendiente de devolucion",
-                "Devolucion parcial", "Devolucion completa", "Cancelado"};
+                "Devolucion parcial", "Devolucion completa", "Cancelado", "Para retiro", "En reparación"};
         String destinatario = envioOptional.get().getEmpleado().getNombre();
         String nuevoEstado = estadosPosibles[(int)(idEstado - 1L)];
 
