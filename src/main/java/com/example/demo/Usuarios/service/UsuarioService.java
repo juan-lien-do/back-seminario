@@ -83,8 +83,10 @@ public class UsuarioService {
         System.out.println(user);
         System.out.println("pass sin hashear:" + password);
         usuarioRepository.save(user);
-        String body = "Usuario: " + username + " - " + "Contraseña temporal: " + password;
-        String subject = "Usuario nuevo, bienvenido a Almacen IT";
+        String body = "Usuario: " + user.getNombre() + " - " + "Contraseña temporal: " + password + "\n" +
+                "Dispone de 15 minutos para ingresar y cambiar su contraseña, en caso contrario comunicarse con " +
+                "Administración nuevamente";
+        String subject = user.getNombreUsuario() + " " + user.getApellidoUsuario()+ ", bienvenido a Almacen IT";
         enviarMail(user.getMail(), body, subject);
         return ("El usuario " + user.getNombre() + " se creó con éxito");
     }
@@ -210,7 +212,6 @@ public class UsuarioService {
         }
     }
 
-    @Transactional
     public String resetPassword(Long id) throws NotFoundException {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if (usuarioOptional.isPresent()) {
@@ -224,7 +225,11 @@ public class UsuarioService {
                     "Dispone de 15 minutos para ingresar y cambiar su contraseña, en caso contrario comunicarse con " +
                     "Administración nuevamente";
             String subject = "Reseteo de contraseña exitoso";
-            enviarMail(usuario.getMail(), body, subject);
+            if(usuario.getMail() != null) {
+                enviarMail(usuario.getMail(), body, subject);
+            } else {
+                return enviarMail("3mmanuelch@gmail.com", body, subject);
+            }
             return ("El usuario " + usuario.getNombre() + " se creó con éxito");
         } else {
             throw new NotFoundException("No existe el usuario");
