@@ -1,5 +1,6 @@
 package com.example.demo.Envios.Archivos.controller;
 
+import com.example.demo.Envios.Archivos.FotoDTO.FotoDTO;
 import com.example.demo.Envios.Archivos.service.ArchivoEnvioService;
 import com.example.demo.Envios.Envios.service.EnvioService;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,17 @@ public class ArchivoEnvioController {
     }
 
     @GetMapping("/fotos/{idEnvio}")
-    public ResponseEntity<List<String>> getFoto(@PathVariable Long idEnvio){
+    public ResponseEntity<List<FotoDTO>> getFoto(@PathVariable Long idEnvio){
         return archivoService.getFotos(idEnvio);
+    }
+
+    @DeleteMapping("/fotos/eliminar/{idEnvio}/{nombreFoto}")
+    public ResponseEntity<String> eliminarFoto(@PathVariable Long idEnvio,
+                                               @PathVariable String nombreFoto){
+        try {
+            return archivoService.eliminarFoto(idEnvio, nombreFoto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

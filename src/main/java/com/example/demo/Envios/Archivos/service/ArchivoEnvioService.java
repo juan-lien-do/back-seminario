@@ -1,6 +1,8 @@
 package com.example.demo.Envios.Archivos.service;
 
+import com.example.demo.Envios.Archivos.FotoDTO.FotoDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,7 @@ public class ArchivoEnvioService {
         }
     }
 
-    public ResponseEntity<List<String>> getFotos(@PathVariable Long idEnvio){
+    public ResponseEntity<List<FotoDTO>> getFotos(@PathVariable Long idEnvio){
         File directorioUploads = new File(UPLOADS_DIR, String.valueOf(idEnvio));
 
         if(!directorioUploads.exists() || !directorioUploads.isDirectory()){
@@ -60,17 +62,40 @@ public class ArchivoEnvioService {
             return ResponseEntity.ok(new ArrayList<>());
         }
 
-        List<String> base64List = new ArrayList<>();
+        List<FotoDTO> fotos = new ArrayList<>();
+        //List<String> base64List = new ArrayList<>();
         for(File archivo : archivos){
             try {
                 String base64 = Files.readString(archivo.toPath());
-                base64List.add(base64);
+                FotoDTO fotoDTO = new FotoDTO();
+                fotoDTO.setBase64Decode(base64);
+                fotoDTO.setNombreArchivo(archivo.getName());
+                fotos.add(fotoDTO);
+                //base64List.add(base64);
             } catch (IOException e) {
                 e.printStackTrace();
                 return ResponseEntity.notFound().build();
             }
         }
-        return ResponseEntity.ok(base64List);
+        return ResponseEntity.ok(fotos);
+    }
+
+    public ResponseEntity<String> eliminarFoto(@PathVariable Long idEnvio, @PathVariable String nombreArchivo){
+        File directorioUploads = new File(UPLOADS_DIR, String.valueOf(idEnvio));
+        if(!directorioUploads.exists() || !directorioUploads.isDirectory()){
+            return ResponseEntity.notFound().build();
+        }
+
+        File photoArchive = new File(UPLOADS_DIR + "/" + idEnvio, nombreArchivo);
+        if(!photoArchive.exists() || !photoArchive.isFile()){
+            return ResponseEntity.notFound().build();
+        }
+
+        if(photoArchive.delete()){
+            return ResponseEntity.ok().body("Foto eliminado con éxito");
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     public Integer contarArchivos(File directorio) {
