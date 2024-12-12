@@ -12,4 +12,5 @@ import lombok.experimental.Accessors;
 public class DetalleEnvioComputadoraResponseDTO {
     private Long idDetalleComputadora;
     private ComputadoraDTO computadoraDTO;
+    private Boolean esDevuelto;
 }

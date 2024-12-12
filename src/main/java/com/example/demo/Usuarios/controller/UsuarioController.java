@@ -111,10 +111,20 @@ public class UsuarioController {
         }
     }
 
-    @PatchMapping("/usuarios/actualizar_contraseña")
+    @PatchMapping("/usuarios/actualizar_password")
     public ResponseEntity<String> changePassword(@RequestBody UsuarioPassDTO user) {
         try {
             String msg = usuarioService.changePassword(user);
+            return ResponseEntity.ok(msg);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/usuarios/blanquear_password/{id}")
+    public ResponseEntity<String> resetarPassword(@PathVariable Long id) {
+        try {
+            String msg = usuarioService.resetPassword(id);
             return ResponseEntity.ok(msg);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

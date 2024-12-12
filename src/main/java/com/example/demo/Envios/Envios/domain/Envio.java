@@ -67,4 +67,95 @@ public class Envio {
                 .detallesEnvioRecurso(this.detallesEnvioRecurso.stream().map(DetalleEnvioRecurso::toDetalleEnvioRecursoResponseDTO).toList())
                 .build();
     }
+
+    // TODO funcion para calcular tiempo por estado
+    public Float calcularTiempoDeProcesamiento(){
+        Float tiempo = 0f;
+        for (CambioEstadoEnvio cev :
+                listaCambiosEstado) {
+            tiempo += cev.calcularTiempoProcesamiento();
+        }
+        return tiempo;
+    }
+
+    public Float calcularTiempoPorEstado(Long estado){
+        Float tiempo = 0f;
+        for (CambioEstadoEnvio cev :
+                listaCambiosEstado) {
+            if (cev.sosEstado(estado)) {
+                tiempo += cev.calcularTiempo();
+            }
+        }
+
+        return tiempo;
+    }
+    
+    public Long contarNotebooks(){
+        Long cantidad = 0L;
+        
+        if (detallesEnvioComputadora == null) return 0L;
+        else {
+            for (DetalleEnvioComputadora det :
+                    detallesEnvioComputadora) {
+                if (det.getComputadora().getIdTipo() == 1L)
+                    cantidad += 1;
+            }
+        }
+        return cantidad;
+    }
+
+    public Long contarPc(){
+        Long cantidad = 0L;
+
+        if (detallesEnvioComputadora == null) return 0L;
+        else {
+            for (DetalleEnvioComputadora det :
+                    detallesEnvioComputadora) {
+                if (det.getComputadora().getIdTipo() == 2L)
+                    cantidad += 1;
+            }
+        }
+        return cantidad;
+    }
+
+    public Long contarAllInOne(){
+        Long cantidad = 0L;
+
+        if (detallesEnvioComputadora == null) return 0L;
+        else {
+            for (DetalleEnvioComputadora det :
+                    detallesEnvioComputadora) {
+                if (det.getComputadora().getIdTipo() == 3L)
+                    cantidad += 1;
+            }
+        }
+        return cantidad;
+    }
+
+    public Long contarPerifericos(){
+        Long cantidad = 0L;
+
+        if(detallesEnvioRecurso == null) return 0L;
+        else {
+            for (DetalleEnvioRecurso der : detallesEnvioRecurso){
+                if (der.getRecurso().getCategoria() == 1L){
+                    cantidad += der.getCantidad();
+                }
+            }
+        }
+        return cantidad;
+    }
+    public Long contarComponentes(){
+        Long cantidad = 0L;
+
+        if(detallesEnvioRecurso == null) return 0L;
+        else {
+            for (DetalleEnvioRecurso der : detallesEnvioRecurso){
+                if (der.getRecurso().getCategoria() == 2L){
+                    cantidad += der.getCantidad();
+                }
+            }
+        }
+        return cantidad;
+    }
 }
