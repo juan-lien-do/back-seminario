@@ -95,7 +95,7 @@ public class UsuarioService {
 
         LocalDateTime ultimaAct = usuario.get().getUltimaActualizacion();
         //Verificación para el primer logueo
-        if(usuario.get().getPrimerLogin() && ultimaAct.isAfter(ultimaAct.plusMinutes(15))) {
+        if(usuario.get().getPrimerLogin() && LocalDateTime.now().isAfter(ultimaAct.plusMinutes(15))) {
             throw new WrongCredentialsException("Contraseña expirada");
         }
 
