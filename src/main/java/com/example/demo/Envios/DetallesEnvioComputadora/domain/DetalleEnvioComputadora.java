@@ -42,6 +42,7 @@ public class DetalleEnvioComputadora {
         return DetalleEnvioComputadoraResponseDTO.builder()
                 .computadoraDTO(ComputadoraMapper.toDTO(this.computadora))
                 .idDetalleComputadora(this.idDetalleComputadora)
+                .esDevuelto(this.esDevuelto)
                 .build();
     }
 }
