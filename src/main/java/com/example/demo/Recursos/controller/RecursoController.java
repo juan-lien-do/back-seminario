@@ -67,6 +67,7 @@ public class RecursoController {
 
     // Métodos DELETE para eliminar un objeto particular por ID de la BBDD
     // voy a usar un patch para que se enoje ricky
+    /*
     @DeleteMapping("/{id}")
     public ResponseEntity<RecursoDTO> deleteById(@PathVariable Long id) {
         try {
@@ -78,10 +79,10 @@ public class RecursoController {
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().header("ERROR_MSG", e.getMessage()).build();
         }
-    }
+    }*/
 
     @PatchMapping("/desactivar/{id}")
-    public ResponseEntity<RecursoDTO> deactivateById(@PathVariable Long id){
+    public ResponseEntity<String> deactivateById(@PathVariable Long id){
         try {
             if (recursoService.logicDelete(id)) {
                 return ResponseEntity.noContent().build();
@@ -90,6 +91,8 @@ public class RecursoController {
             }
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().header("ERROR_MSG", e.getMessage()).build();
+        } catch (BadRequestException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
