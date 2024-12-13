@@ -5,6 +5,8 @@ import com.example.demo.Computadoras.mapper.ComputadoraMapper;
 import com.example.demo.Envios.DetallesEnvioComputadora.dto.DetalleEnvioComputadoraResponseDTO;
 import com.example.demo.Envios.Envios.domain.Envio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,10 +32,11 @@ public class DetalleEnvioComputadora {
     private Computadora computadora;
 
     @Column(name = "es_devuelto")
+
     private Boolean esDevuelto;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
     private Envio envio;
 

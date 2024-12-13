@@ -1,0 +1,17 @@
+Estimado %s el presente mail es para informarle que hemos enviado el equipo informático:
+
+%s
+
+Necesitamos responda este mail confirmando la recepción de lo detallado y aceptando las responsabilidades de usos que a continuación se describe:
+
+Declaración Jurada de solicitud de equipos:
+
+La presente solicitud, tiene carácter de declaración jurada y corresponde a la solicitud de equipo para trabajar en forma remota.
+La persona que suscribe, declara bajo juramento que recibe de parte de la Caja de Jubilaciones, Pensiones y Retiros de la Provincia de Córdoba, a título de comodato, un equipo informático que se designará en el presente correo, el equipo se encuentra en perfecto estado de funcionamiento y exclusivamente para uso laboral, obligándose a restituirlo en las mismas condiciones en que fuera recibido cuando la entidad así lo disponga, en estricta observancia de las disposiciones contenidas en los arts. 1533 y subsiguientes del Código Civil y Comercial de la Nación.
+Los equipos asignados pueden variar en características técnicas, pero cumplen con los requisitos establecidos por el Gobierno de la Provincia de Córdoba.
+En todo momento, la persona que utiliza dicho equipo, tiene la obligación de conocer las disposiciones en cuanto a Seguridad Informática que establece el Gobierno de la Provincia de Córdoba. Asimismo, se compromete a mantener el equipo en condiciones adecuadas, obrando con cuidado y previsión, debiendo comunicar cualquier desperfecto técnico que eventualmente pudiera sufrir el equipo al área de Sistemas de la Caja de Jubilaciones, Pensiones y Retiros de Córdoba.
+El equipo asignado pertenece a la Caja de Jubilaciones, Pensiones y Retiros de la Provincia de Córdoba y podrá ser cambiado, actualizado o reclamado en cualquier oportunidad para su revisión y/o actualización de software.
+En caso de robo, hurto y/o extravío del equipo, se obliga a realizar la correspondiente denuncia policial y a comunicar tal circunstancia en forma inmediata a la entidad a los fines de tomar los recaudos pertinentes.
+
+Desde ya, muchas gracias.
+Equipo de Infraestructura de CJPRCBA.
