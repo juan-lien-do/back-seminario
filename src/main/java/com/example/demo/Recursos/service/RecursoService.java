@@ -137,16 +137,32 @@ public class RecursoService {
 
     // Método DELETE para modificar algún recurso de la BBDD
     @Transactional
-    public Boolean logicDelete(Long id) throws NotFoundException {
+    public Boolean logicDelete(Long id) throws NotFoundException, BadRequestException {
         Optional<Recurso> recursoOptional = recursoRepository.findById(id);
-        if(recursoOptional.isPresent()) {
-            Recurso recurso = recursoOptional.get();
-            recurso.setActivo(false);
-            recursoRepository.save(recurso);
-            return true;
-        } else {
-            throw new NotFoundException("No se encontró el recurso");
+        if(recursoOptional.isEmpty()) throw new NotFoundException("No se encontró el recurso");
+
+
+        Recurso recurso = recursoOptional.get();
+
+        // aca valido si no está presente en un detalle no devuelto
+        List<DetalleEnvioRecurso> detalles = detalleEnvioRecursoRepository.findByRecurso(recurso);
+
+        System.out.println(detalles.size());
+
+        if (!(detalles == null || detalles.isEmpty())){
+
+            for (DetalleEnvioRecurso det :
+                    detalles) {
+                if (!det.getEsDevuelto()){
+                    throw new BadRequestException("El empleado " + det.getEnvio().getEmpleado().getNombre() + " no devolvió aún este recurso.");
+                }
+            }
         }
+
+        recurso.setActivo(false);
+        recursoRepository.save(recurso);
+        return true;
+
     }
 
     @Transactional
