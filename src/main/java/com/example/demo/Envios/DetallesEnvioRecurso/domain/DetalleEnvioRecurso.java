@@ -42,7 +42,7 @@ public class DetalleEnvioRecurso {
     @JoinColumn(name = "idenvio", referencedColumnName = "idenvio")
     private Envio envio;
 
-    @Column(name = "es_devuelto")
+    @Column(name = "es_devuelto") // esto me re salva
     private Boolean esDevuelto;
 
     public DetalleEnvioRecursoResponseDTO toDetalleEnvioRecursoResponseDTO(){

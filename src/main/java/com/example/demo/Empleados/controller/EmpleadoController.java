@@ -1,6 +1,7 @@
 package com.example.demo.Empleados.controller;
 
 
+import com.example.demo.Empleados.domain.Empleado;
 import com.example.demo.Empleados.dto.EmpleadoPostRequestDTO;
 import com.example.demo.Empleados.dto.EmpleadoPutRequestDTO;
 import com.example.demo.Empleados.dto.EmpleadoResponseDTO;
@@ -12,6 +13,7 @@ import com.example.demo.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -80,6 +82,17 @@ public class EmpleadoController {
             return ResponseEntity.status(201).body(empleadoService.desactivarEmpleado(id));
         } catch (NotFoundException e){
             return ResponseEntity.notFound().header("error",e.getMessage()).build();
+        } catch (BadRequestException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/tiene-computadora/{id}")
+    public ResponseEntity<List<String>> quienTieneComputadora(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(empleadoService.quienTieneComputadora(id));
+        } catch (NotFoundException e){
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -68,6 +68,16 @@ public class Envio {
                 .build();
     }
 
+    public CambioEstadoEnvio conseguirUltimoEstado(){
+        for (CambioEstadoEnvio cev : listaCambiosEstado){
+            if (cev.sosFinal()){
+                return cev;
+            }
+        }
+
+        return listaCambiosEstado.get(listaCambiosEstado.size()-1);
+    }
+
     // TODO funcion para calcular tiempo por estado
     public Float calcularTiempoDeProcesamiento(){
         Float tiempo = 0f;
@@ -157,5 +167,11 @@ public class Envio {
             }
         }
         return cantidad;
+    }
+
+    // cancelado o devuelto completo
+    public Boolean sosFinalizado(){
+        CambioEstadoEnvio cev = conseguirUltimoEstado();
+        return cev.sosEstado(7L) || cev.sosEstado(6L);
     }
 }
