@@ -9,7 +9,7 @@ public class UsuarioMapper {
     public static UsuarioDTO toDto(Usuario usuario){
         return UsuarioDTO.builder()
                 .id(usuario.getId())
-                .email(usuario.getMail())
+                .mail(usuario.getMail())
                 .nombre(usuario.getNombre())
                 .apellido_usr(usuario.getApellidoUsuario())
                 .nombre_usr(usuario.getNombreUsuario())
@@ -33,7 +33,7 @@ public class UsuarioMapper {
                 .nombre(user.getNombre())
                 .apellidoUsuario(user.getApellido_usr())
                 .nombreUsuario(user.getNombre_usr())
-                .mail(user.getEmail())
+                .mail(user.getMail())
                 .cuil(user.getCuil())
                 .isAdmin(user.getIsAdmin())
                 .isDriver(user.getEsDriver())
