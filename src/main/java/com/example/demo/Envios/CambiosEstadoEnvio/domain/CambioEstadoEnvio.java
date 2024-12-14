@@ -66,4 +66,9 @@ public class CambioEstadoEnvio {
     public Boolean sosEstado(Long estado){
         return Objects.equals(estado, idEstadoEnvio);
     }
+    public Boolean sosFinal(){
+        return fechaFin == null;
+    }
+
+
 }
