@@ -1,10 +1,7 @@
 package com.example.demo.Recursos.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -12,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "registro_incorporaciones")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class RegistroIncorporacion {
     @Id

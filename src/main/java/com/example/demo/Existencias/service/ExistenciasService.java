@@ -89,7 +89,7 @@ public class ExistenciasService {
         else return 0L;
     }
 
-    public void aumentarExistencias(Long idExistencia, Long cantidad) throws NotFoundException, BadRequestException {
+    public void aumentarExistencias(Long idExistencia, Long cantidad) throws NotFoundException {
 
         Optional<Existencia> existenciaOptional = existenciasRepository.findById(idExistencia);
 

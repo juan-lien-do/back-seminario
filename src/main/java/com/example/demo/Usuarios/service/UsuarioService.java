@@ -131,6 +131,7 @@ public class UsuarioService {
         if(usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
             usuario.setEsActivo(false);
+            usuario.setFechaBaja(LocalDateTime.now());
             usuarioRepository.save(usuario);
             return true;
         } else {
@@ -144,6 +145,7 @@ public class UsuarioService {
         if(usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
             usuario.setEsActivo(true);
+            usuario.setFechaBaja(null);
             usuarioRepository.save(usuario);
             return true;
         } else {
