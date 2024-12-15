@@ -59,8 +59,9 @@ public class CambioEstadoEnvio {
         else return 0f;
     }
 
-    public Float calcularTiempo(){
-        return (float) ChronoUnit.HOURS.between(fechaInicio, fechaFin != null ? fechaFin : LocalDateTime.now());
+    public Float calcularTiempo(){ // devuelve el tiempo en horas con coma
+        // HAY QUE USAR MINUTES porque sino devuelve una cantidad entera de horas
+        return ((float) ChronoUnit.MINUTES.between(fechaInicio, fechaFin != null ? fechaFin : LocalDateTime.now())) / 60f;
     }
 
     public Boolean sosEstado(Long estado){
