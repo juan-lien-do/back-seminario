@@ -110,8 +110,9 @@ public class EmpleadoService {
 
         List<DetalleEnvioComputadora> detalleEnvioComputadoras = detallesEnvioComputadoraRepository.findByComputadora(compuOpt.get());
 
-        List<Envio> enviosConCompuNoFinalizados = detalleEnvioComputadoras.stream().map(DetalleEnvioComputadora::getEnvio)
-                .filter(envio -> !envio.sosFinalizado())
+        List<Envio> enviosConCompuNoFinalizados = detalleEnvioComputadoras.stream()
+                .filter(det -> !det.getEsDevuelto())
+                .map(DetalleEnvioComputadora::getEnvio)
                 .toList();
 
         List<String> nombres = enviosConCompuNoFinalizados.stream()

@@ -75,7 +75,7 @@ public class EnvioController {
     }
 
     @PutMapping("/{idEnvio}/{idEstado}")
-    public ResponseEntity<String> asdasasd(@PathVariable Long idEnvio, @PathVariable Long idEstado){
+    public ResponseEntity<String> cambiarEstado(@PathVariable Long idEnvio, @PathVariable Long idEstado){
         try {
             envioService.cambiarEstado(idEnvio, idEstado);
             return ResponseEntity.status(201).build();

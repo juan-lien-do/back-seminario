@@ -14,6 +14,7 @@ import com.example.demo.Envios.DetallesEnvioComputadora.repository.DetallesEnvio
 import com.example.demo.Envios.DetallesEnvioRecurso.domain.DetalleEnvioRecurso;
 import com.example.demo.Envios.DetallesEnvioRecurso.dto.DetalleRecursoPostDTO;
 import com.example.demo.Envios.DetallesEnvioRecurso.repository.DetalleEnvioRecursoRepository;
+import com.example.demo.Envios.Envios.controller.EnvioController;
 import com.example.demo.Envios.Envios.domain.Envio;
 import com.example.demo.Envios.Envios.dto.EnvioDTO;
 import com.example.demo.Envios.Envios.dto.EnvioPostDTO;
@@ -24,6 +25,8 @@ import com.example.demo.Existencias.domain.Existencia;
 import com.example.demo.Existencias.dto.ExistenciaRequestDTO;
 import com.example.demo.Existencias.repository.ExistenciasRepository;
 import com.example.demo.Existencias.service.ExistenciasService;
+import com.example.demo.Recursos.repository.RecursoRepository;
+import com.example.demo.Recursos.service.RecursoService;
 import com.example.demo.Usuarios.domain.Usuario;
 import com.example.demo.Usuarios.repository.UsuarioRepository;
 import com.example.demo.exceptions.BadRequestException;
@@ -61,6 +64,8 @@ public class EnvioService {
     private final DetalleEnvioRecursoRepository detalleEnvioRecursoRepository;
     @Autowired
     private final CambiosEstadoEnvioRepository cambiosEstadoEnvioRepository;
+    @Autowired
+    private final RecursoService recursoService;
     @Autowired
     private final ExistenciasService existenciasService;
     @Autowired
@@ -186,6 +191,24 @@ public class EnvioService {
         return envPersist.toResponseDTO();
     }
 
+    // como se cancela un envio, los recursos vuelven a estar disponibles.
+    public void cancelarDetallesEnvio(Envio envio) throws NotFoundException{
+        // por cada detalle de envio de computadora
+        for (DetalleEnvioComputadora det : envio.getDetallesEnvioComputadora()) {
+            Computadora computadora = det.getComputadora();
+            det.setEsDevuelto(true);
+            detallesEnvioComputadoraRepository.save(det);
+            computadoraService.actualizarEnUso(computadora.getIdComputadora(), false);
+        }
+
+        // por cada detalle de envio de recurso
+        for (DetalleEnvioRecurso det : envio.getDetallesEnvioRecurso()) {
+            recursoService.actualizarEsDevuelto(det.getIdDetalleRecurso(), true);
+            Existencia existencia = det.getExistencia();
+            existenciasService.aumentarExistencias(existencia.getId(), det.getCantidad());
+        }
+    }
+
     public void cambiarEstado(Long idEnvio, Long idEstado) throws Exception {
         Optional<Envio> envioOptional = envioRepository.findById(idEnvio);
         if (envioOptional.isEmpty()) throw new NotFoundException("No se encontró el envío.");
@@ -219,9 +242,20 @@ public class EnvioService {
         cambiosEstadoEnvioRepository.save(cev);
         cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
 
+        // cancelar detalles
+        if (idEstado == 7){
+            cancelarDetallesEnvio(envioOptional.get());
+        }
+
         // Enviar notificación
-            twilioNotificationService.notificarUsuario("+5493525413678", nuevoEstado, destinatario);
-            twilioNotificationService.notificarUsuario("+5493586022582", nuevoEstado, destinatario);
+        if (idEstado == 8L || idEstado == 3L || idEstado == 4L){
+            List<Usuario> usuariosNotificables = usuarioRepository.findByIsDriver(true);
+            System.out.println(usuariosNotificables.size());
+
+            for (Usuario us : usuariosNotificables){
+                twilioNotificationService.notificarUsuario(us.getTelefono(), nuevoEstado, destinatario);
+            }
+        }
     }
 
 }
