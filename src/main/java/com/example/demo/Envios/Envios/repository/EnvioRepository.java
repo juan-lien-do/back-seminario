@@ -7,12 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EnvioRepository extends JpaRepository<Envio, Long> {
     List<Envio> findByFechaPreparacionBetween(LocalDate fechaInicio, LocalDate fechaFin);
-
+    Optional<Envio> findEnvioByIdEnvio(Long idEnvio);
     List<Envio> findByEmpleado(Empleado empleado);
-
-
 }

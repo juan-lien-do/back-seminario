@@ -1,0 +1,13 @@
+Estimado %s,
+
+Le informamos que su envío con ID: %s ha cambiado de estado a: %s.
+
+Los detalles del envío son los siguientes:
+
+%s
+
+Por favor, no dude en contactarnos si tiene alguna pregunta o necesita más información.
+
+Saludos cordiales,
+Equipo de Infraestructura
+Caja de Jubilaciones, Pensiones y Retiros de Córdoba.

@@ -1,5 +1,9 @@
 package com.example.demo.notificaciones.services;
 
+import com.example.demo.Envios.DetallesEnvioComputadora.dto.DetalleEnvioComputadoraResponseDTO;
+import com.example.demo.Envios.DetallesEnvioRecurso.dto.DetalleEnvioRecursoResponseDTO;
+import com.example.demo.Envios.Envios.domain.Envio;
+import com.example.demo.Envios.Envios.dto.EnvioResponseDTO;
 import com.example.demo.config.SMTPConfig;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -13,10 +17,12 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -116,13 +122,25 @@ public class EMailServiceImpl implements EMailService{
                 String contentId = "inlineImage";
 
                 // Crear el contenido HTML con la imagen en el cuerpo
-                String htmlContent = "<html><body>"
+                /*String htmlContent = "<html><body>"
                         + "<h3>" + eMailDetails.getMsgBody().replace("\n", "<br>") + "</h3>"
                         + "<div style='display: flex; align-items: center;'>"
                         + "    <img src='cid:" + contentId + "' alt='imagen' style='margin-right: 10px;' />"
                         + "    <span style='font-size: 14px; color: gray;'>Administración de ALMACÉN IT</span>"
                         + "</div>"
+                        + "</body></html>"; */
+
+                String htmlContent = "<html><body>"
+                        + "<style>"
+                        + "   h3 { color: #000000; text-decoration: none; }" // Color para enlaces
+                        + "</style>"
+                        + "<h3>" + eMailDetails.getMsgBody().replace("\n", "<br>") + "</h3>"
+                        + "<div style='display: flex; align-items: center; font-size: 14px; color: gray;'>"
+                        + "    <img src='cid:" + contentId + "' alt='imagen' style='margin-right: 10px; border: none;' />"
+                        + "    <span>Administración de ALMACÉN IT</span>"
+                        + "</div>"
                         + "</body></html>";
+
 
                 mimeMessageHelper.setText(htmlContent, true); // Indica que el contenido es HTML
 
