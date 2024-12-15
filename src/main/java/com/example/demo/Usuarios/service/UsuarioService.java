@@ -84,7 +84,7 @@ public class UsuarioService {
             nameIndex++;
         }
         //En mayúsculas
-        user.setNombre(username);
+        user.setNombre(username.toUpperCase());
         //A modo debug
         System.out.println(user);
         System.out.println("pass sin hashear:" + password);
