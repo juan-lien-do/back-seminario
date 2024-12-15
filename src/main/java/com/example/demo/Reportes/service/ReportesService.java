@@ -117,7 +117,8 @@ public class ReportesService {
             if (cantidad == 0L){
                 tiemposPromedioProcesamiento.add(0f);
             } else {
-                tiemposPromedioProcesamiento.add((float) acumulado / cantidad);
+                Float tps = (Math.round(10 * ((float) acumulado / (float) cantidad)))/10f;
+                tiemposPromedioProcesamiento.add(tps);
             }
             //continuar
         }
@@ -149,7 +150,8 @@ public class ReportesService {
             if (cantidad == 0L ){
                 tiempoPorEstado.add(0f);
             } else {
-                tiempoPorEstado.add(tiempo / (float) cantidad);
+                Float tps = (Math.round(10 * (tiempo / (float) cantidad)))/10f;
+                tiempoPorEstado.add(tps);
             }
         }
 

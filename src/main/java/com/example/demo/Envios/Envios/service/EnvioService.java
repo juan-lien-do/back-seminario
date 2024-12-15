@@ -220,8 +220,14 @@ public class EnvioService {
         cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
 
         // Enviar notificación
-            twilioNotificationService.notificarUsuario("+5493525413678", nuevoEstado, destinatario);
-            twilioNotificationService.notificarUsuario("+5493586022582", nuevoEstado, destinatario);
+        if (idEstado == 8L || idEstado == 3L || idEstado == 4L){
+            List<Usuario> usuariosNotificables = usuarioRepository.findByIsDriver(true);
+            System.out.println(usuariosNotificables.size());
+
+            for (Usuario us : usuariosNotificables){
+                twilioNotificationService.notificarUsuario(us.getTelefono(), nuevoEstado, destinatario);
+            }
+        }
     }
 
 }
