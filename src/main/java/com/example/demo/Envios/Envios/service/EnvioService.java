@@ -251,61 +251,62 @@ public class EnvioService {
                 "Enviado", "Entregado/Pendiente de devolucion",
                 "Devolucion parcial", "Devolucion completa", "Cancelado", "Para retiro", "En reparación"};
         String destinatario = envioOptional.get().getEmpleado().getNombre();
-        String nuevoEstado = estadosPosibles[(int)(idEstado - 1L)];
+        String nuevoEstado = estadosPosibles[(int) (idEstado - 1L)];
 
         // Guardar ambos cambios
         cambiosEstadoEnvioRepository.save(cev);
         cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
 
         // cancelar detalles
-        if (idEstado == 7){
+        if (idEstado == 7) {
             cancelarDetallesEnvio(envioOptional.get());
         }
 
         // Enviar notificación
-          if (idEstado == 8L || idEstado == 3L || idEstado == 4L){
+        if (idEstado == 8L || idEstado == 3L || idEstado == 4L) {
             List<Usuario> usuariosNotificables = usuarioRepository.findByIsDriver(true);
             System.out.println(usuariosNotificables.size());
 
-            for (Usuario us : usuariosNotificables){
+            for (Usuario us : usuariosNotificables) {
                 twilioNotificationService.notificarUsuario(us.getTelefono(), nuevoEstado, destinatario);
             }
-            
-        EnvioResponseDTO envioDTO = envioOptional.get().toResponseDTO();
-        String nombreEmpleado = envioDTO.getNombreEmpleado();
-        String email = envioOptional.get().getEmpleado().getMail();
-        String bodyTemplate = "";
-        String body = "";
-        //Traer detalles del envío para asociar al email
-        StringBuilder detallerBuilder = new StringBuilder();
-        for(DetalleEnvioComputadoraResponseDTO det : envioDTO.getDetallesEnvioComputadora()) {
-            detallerBuilder.append("- Computadora: ")
-                    .append(det.getComputadoraDTO().getDescripcion())
-                    .append("\n");
-        }
-        for (DetalleEnvioRecursoResponseDTO det : envioDTO.getDetallesEnvioRecurso()) {
-            detallerBuilder.append("- Cantidad: ").append(det.getCantidad())
-                    .append(", Recurso: ").append(det.getExistenciaDTO().getNombreRecurso())
-                    .append("\n");
-        }
-        //Manejo de envios de email según estado
-        switch (idEstado.intValue()) {
-            case 4:
-                bodyTemplate = loadTemplate("Enviado-bodyemail.txt");
-                body = String.format(bodyTemplate,
-                        nombreEmpleado,
-                        detallerBuilder);
-                usuarioService.enviarMail(email, body, "El envío fue retirado por logística");
-                break;
-            case 2,3,8:
-                bodyTemplate = loadTemplate("ParaRetiro-bodyemail.txt");
-                body = String.format(bodyTemplate, nombreEmpleado,
-                        idEnvio,
-                        estadosPosibles[idEstado.intValue()-1],
-                        detallerBuilder);
-                //System.out.println(bodyTemplate);
-                usuarioService.enviarMail(email, body, "Actualización estado envío " + idEnvio);
-                break;
+
+            EnvioResponseDTO envioDTO = envioOptional.get().toResponseDTO();
+            String nombreEmpleado = envioDTO.getNombreEmpleado();
+            String email = envioOptional.get().getEmpleado().getMail();
+            String bodyTemplate = "";
+            String body = "";
+            //Traer detalles del envío para asociar al email
+            StringBuilder detallerBuilder = new StringBuilder();
+            for (DetalleEnvioComputadoraResponseDTO det : envioDTO.getDetallesEnvioComputadora()) {
+                detallerBuilder.append("- Computadora: ")
+                        .append(det.getComputadoraDTO().getDescripcion())
+                        .append("\n");
+            }
+            for (DetalleEnvioRecursoResponseDTO det : envioDTO.getDetallesEnvioRecurso()) {
+                detallerBuilder.append("- Cantidad: ").append(det.getCantidad())
+                        .append(", Recurso: ").append(det.getExistenciaDTO().getNombreRecurso())
+                        .append("\n");
+            }
+            //Manejo de envios de email según estado
+            switch (idEstado.intValue()) {
+                case 4:
+                    bodyTemplate = loadTemplate("Enviado-bodyemail.txt");
+                    body = String.format(bodyTemplate,
+                            nombreEmpleado,
+                            detallerBuilder);
+                    usuarioService.enviarMail(email, body, "El envío fue retirado por logística");
+                    break;
+                case 2, 3, 8:
+                    bodyTemplate = loadTemplate("ParaRetiro-bodyemail.txt");
+                    body = String.format(bodyTemplate, nombreEmpleado,
+                            idEnvio,
+                            estadosPosibles[idEstado.intValue() - 1],
+                            detallerBuilder);
+                    //System.out.println(bodyTemplate);
+                    usuarioService.enviarMail(email, body, "Actualización estado envío " + idEnvio);
+                    break;
+            }
         }
     }
 
@@ -313,8 +314,6 @@ public class EnvioService {
         ClassPathResource resource = new ClassPathResource("/emailsTemplates/" + fileName);
         try (InputStream inputStream = resource.getInputStream()) {
             return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-
         }
     }
-
 }

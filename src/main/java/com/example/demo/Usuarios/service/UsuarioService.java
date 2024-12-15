@@ -75,8 +75,14 @@ public class UsuarioService {
         user.setUltimaActualizacion(creacion);
         user.setEsActivo(true);
         user.setIsAdmin(false);
+        user.setIsDriver(false);
         user.setFechaCreacion(creacion);
         String username = (usuarioDTO.getApellido_usr() + usuarioDTO.getNombre_usr().charAt(0)).toUpperCase();
+        int nameIndex = 1;
+        while (usuarioRepository.existsByNombre(username)) {
+            username += usuarioDTO.getNombre_usr().charAt(nameIndex);
+            nameIndex++;
+        }
         //En mayúsculas
         user.setNombre(username);
         //A modo debug

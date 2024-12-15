@@ -12,4 +12,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     public Optional<Usuario> findByNombre(String nombre);
     public Boolean existsByCuil(String cuil);
     public List<Usuario> findByIsDriver(Boolean isDriver);
+    public Boolean existsByNombre(String username);
 }
