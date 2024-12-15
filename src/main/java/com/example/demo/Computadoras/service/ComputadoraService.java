@@ -146,7 +146,7 @@ public class ComputadoraService {
 
     @Transactional
     //TODO función que actualice el enUso de una computadora
-    public void actualizarEnUso(Long idComputadora, Boolean enUso) throws NotFoundException, BadRequestException {
+    public void actualizarEnUso(Long idComputadora, Boolean enUso) throws NotFoundException {
         Optional<Computadora> computadoraOptional = computadoraRepository.findById(idComputadora);
         if(computadoraOptional.isPresent()) {
             Computadora computadora = computadoraOptional.get();
