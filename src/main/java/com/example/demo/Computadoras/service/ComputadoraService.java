@@ -84,6 +84,11 @@ public class ComputadoraService {
             throw new BadRequestException("El nroWs ya está en uso, debe ser único.");
         }
 
+        //Verificacion de nroSerie repetido
+        if(computadoraRepository.existsByNroSerie(body.getNroSerie())){
+            throw new BadRequestException("El nroSerie duplicado, registro inválido");
+        }
+
         //VALIDACIÓN MOMENTÁNEA
         if (body.getEsActivo() == null) {
             throw new BadRequestException("El campo 'esActivo' es obligatorio.");

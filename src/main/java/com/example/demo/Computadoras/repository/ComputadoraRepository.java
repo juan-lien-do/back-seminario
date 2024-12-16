@@ -13,4 +13,5 @@ public interface ComputadoraRepository extends JpaRepository<Computadora, Long> 
     List<Computadora> findByEsMasterizado(Boolean esActivo);
     List<Computadora> findByIdTipo(Long idTipo);
     Boolean existsByNroWs(Long nroWs);
+    Boolean existsByNroSerie(String nroSerie);
 }
