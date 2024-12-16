@@ -295,7 +295,7 @@ public class EnvioService {
                     body = String.format(bodyTemplate,
                             nombreEmpleado,
                             detallerBuilder);
-                    usuarioService.enviarMail(email, body, "El envío fue retirado por logística");
+                    usuarioService.enviarMail(email, body, "Confirmar recepción envío ID: " + idEnvio);
                     break;
                 case 2, 3, 8:
                     bodyTemplate = loadTemplate("ParaRetiro-bodyemail.txt");
