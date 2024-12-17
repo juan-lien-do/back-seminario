@@ -25,21 +25,27 @@ public class ArchivoEnvioService {
     private static final String UPLOADS_DIR = "uploads/";
 
     public ResponseEntity<String> cargarFoto(@PathVariable Long idEnvio,
-                                             @RequestParam MultipartFile file) {
+                                             @RequestParam MultipartFile file,
+                                             String ruta) {
         try {
+            //Control de que no venga vacío
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body("Foto no encontrado");
             }
-
-
+            //Control del tipo, solo IMAGENES
             String tipoArchivo = file.getContentType();
             System.out.println(tipoArchivo);
             if(!tipoArchivo.equals("image/png") && !tipoArchivo.equals("image/jpeg")){
                 return ResponseEntity.badRequest().body("Tipo de archivo adjunto no permitido");
             }
-            File directorioArchivos = new File(UPLOADS_DIR, String.valueOf(idEnvio));
-            if (!directorioArchivos.exists() && !directorioArchivos.mkdirs()) {
+            //CONTROL EXISTENCIA DIRECTOR POR ID (que exista carpeta 1)
+            File directorioEnvio = new File(UPLOADS_DIR, String.valueOf(idEnvio));
+            if (!directorioEnvio.exists() && !directorioEnvio.mkdirs()) {
                 return ResponseEntity.status(500).body("No se pudo crear el directorio");
+            }
+            File directorioArchivos = new File(UPLOADS_DIR + "/" + idEnvio, String.valueOf(ruta));
+            if(!directorioArchivos.exists() && !directorioArchivos.mkdirs()){
+                return ResponseEntity.status(500).body("No se pudo crear el directorio de " + ruta);
             }
 
             byte[] bytes = file.getBytes();
@@ -56,8 +62,8 @@ public class ArchivoEnvioService {
         }
     }
 
-    public ResponseEntity<List<FotoDTO>> getFotos(@PathVariable Long idEnvio){
-        File directorioUploads = new File(UPLOADS_DIR, String.valueOf(idEnvio));
+    public ResponseEntity<List<FotoDTO>> getFotos(@PathVariable Long idEnvio, String ruta){
+        File directorioUploads = new File(UPLOADS_DIR + "/" + idEnvio, String.valueOf(ruta));
 
         if(!directorioUploads.exists() || !directorioUploads.isDirectory()){
             return ResponseEntity.notFound().build();

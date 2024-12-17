@@ -41,9 +41,7 @@ import com.twilio.base.bearertoken.Resource;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -226,6 +224,7 @@ public class EnvioService {
     }
 
     public void cambiarEstado(Long idEnvio, Long idEstado) throws Exception {
+        System.out.println("Llega el cambio de estado" +  idEnvio + "-" + idEstado);
         Optional<Envio> envioOptional = envioRepository.findEnvioByIdEnvio(idEnvio);
         if (envioOptional.isEmpty()) throw new NotFoundException("No se encontró el envío.");
 
@@ -255,21 +254,26 @@ public class EnvioService {
         String nuevoEstado = estadosPosibles[(int) (idEstado - 1L)];
 
         // Guardar ambos cambios
-        cambiosEstadoEnvioRepository.save(cev);
-        cambiosEstadoEnvioRepository.save(cambioEstadoEnvio);
+        cambiosEstadoEnvioRepository.saveAll(List.of(cev, cambioEstadoEnvio));
+
+        System.out.println("CEV guardados");
 
         // cancelar detalles
         if (idEstado == 7) {
             cancelarDetallesEnvio(envioOptional.get());
+            System.out.println("detalles cancelados");
         }
 
+
+
         // Enviar notificación
-        if (idEstado == 8L || idEstado == 3L || idEstado == 4L) {
-            List<Usuario> usuariosNotificables = usuarioRepository.findByIsDriver(true);
+        if (idEstado == 8L || idEstado == 3L || idEstado == 4L || idEstado == 2L) {
+            List<Usuario> usuariosNotificables = usuarioRepository.findByIsDriver(true).stream().filter(Usuario::getEsActivo).toList();
             System.out.println(usuariosNotificables.size());
 
             for (Usuario us : usuariosNotificables) {
                 twilioNotificationService.notificarUsuario(us.getTelefono(), nuevoEstado, destinatario);
+                System.out.println("notificacion twilio enviada");
             }
 
             EnvioResponseDTO envioDTO = envioOptional.get().toResponseDTO();
@@ -308,6 +312,7 @@ public class EnvioService {
                     usuarioService.enviarMail(email, body, "Actualización estado envío " + idEnvio);
                     break;
             }
+            System.out.println("mail enviado");
         }
     }
 

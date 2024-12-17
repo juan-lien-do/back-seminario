@@ -28,19 +28,35 @@ public class ArchivoEnvioController {
 
     private static final String UPLOADS_DIR = "uploads/";
 
-    @PostMapping("/cargar_foto/{idEnvio}")
-    public ResponseEntity<String> cargarFoto(@PathVariable Long idEnvio,
+    //Cargar foto devolucion
+    @PostMapping("/cargar_fotoDev/{idEnvio}")
+    public ResponseEntity<String> cargarFotoDev(@PathVariable Long idEnvio,
                                              @RequestParam("file") MultipartFile file) {
         try {
-            return archivoService.cargarFoto(idEnvio, file);
+            return archivoService.cargarFoto(idEnvio, file, "devolucion");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    //Cargar foto envio
+    @PostMapping("/cargar_fotoEnv/{idEnvio}")
+    public ResponseEntity<String> cargarFotoEnv(@PathVariable Long idEnvio,
+                                             @RequestParam("file") MultipartFile file) {
+        try {
+            return archivoService.cargarFoto(idEnvio, file, "envio");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/fotos/{idEnvio}")
-    public ResponseEntity<List<FotoDTO>> getFoto(@PathVariable Long idEnvio){
-        return archivoService.getFotos(idEnvio);
+    @GetMapping("/fotos-envio/{idEnvio}")
+    public ResponseEntity<List<FotoDTO>> getFotoEnv(@PathVariable Long idEnvio){
+        return archivoService.getFotos(idEnvio, "envio");
+    }
+
+    @GetMapping("/fotos-devol/{idEnvio}")
+    public ResponseEntity<List<FotoDTO>> getFotoDev(@PathVariable Long idEnvio){
+        return archivoService.getFotos(idEnvio, "devolucion");
     }
 
     @DeleteMapping("/fotos/eliminar/{idEnvio}/{nombreFoto}")
