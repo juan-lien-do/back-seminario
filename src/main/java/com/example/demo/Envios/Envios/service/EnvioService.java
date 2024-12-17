@@ -157,6 +157,7 @@ public class EnvioService {
             computadoraService.actualizarEnUso(compu.get().getIdComputadora(), true);
 
             DetalleEnvioComputadora dec = new DetalleEnvioComputadora();
+            dec.setEsDevuelto(false);
             dec.setComputadora(compu.get());
 
             decs.add(dec);

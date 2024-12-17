@@ -34,7 +34,7 @@ public class ArchivoEnvioService {
 
             String tipoArchivo = file.getContentType();
             System.out.println(tipoArchivo);
-            if(!tipoArchivo.equals("image/png") || tipoArchivo.equals("image/jpeg")){
+            if(!tipoArchivo.equals("image/png") && !tipoArchivo.equals("image/jpeg")){
                 return ResponseEntity.badRequest().body("Tipo de archivo adjunto no permitido");
             }
             File directorioArchivos = new File(UPLOADS_DIR, String.valueOf(idEnvio));

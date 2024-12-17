@@ -11,6 +11,7 @@ import com.example.demo.Empleados.repository.EmpleadoRepository;
 import com.example.demo.Envios.DetallesEnvioComputadora.domain.DetalleEnvioComputadora;
 import com.example.demo.Envios.DetallesEnvioComputadora.repository.DetallesEnvioComputadoraRepository;
 import com.example.demo.Envios.Envios.domain.Envio;
+import com.example.demo.Envios.Envios.dto.EnvioResponseDTO;
 import com.example.demo.Envios.Envios.repository.EnvioRepository;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.NotFoundException;
@@ -110,13 +111,14 @@ public class EmpleadoService {
 
         List<DetalleEnvioComputadora> detalleEnvioComputadoras = detallesEnvioComputadoraRepository.findByComputadora(compuOpt.get());
 
-        List<Envio> enviosConCompuNoFinalizados = detalleEnvioComputadoras.stream()
+        List<EnvioResponseDTO> enviosConCompuNoFinalizados = detalleEnvioComputadoras.stream()
                 .filter(det -> !det.getEsDevuelto())
                 .map(DetalleEnvioComputadora::getEnvio)
+                .map(Envio::toResponseDTO)
                 .toList();
 
         List<String> nombres = enviosConCompuNoFinalizados.stream()
-                .map(env -> env.getEmpleado().getNombre()+"-"+env.getEmpleado().getCuil().toString())
+                .map(env -> env.getNombreEmpleado() +"-"+env.getCuilEmpleado().toString())
                 .toList();
         Set<String> nombreSinRepetir = new HashSet<>();
         nombreSinRepetir.addAll(nombres);

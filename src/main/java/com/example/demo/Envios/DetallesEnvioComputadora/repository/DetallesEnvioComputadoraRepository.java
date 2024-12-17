@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface DetallesEnvioComputadoraRepository extends JpaRepository<DetalleEnvioComputadora, Long> {
     List<DetalleEnvioComputadora> findByComputadora(Computadora computadora);
+    //List<DetalleEnvioComputadora> findByIdComputadora(Long idComputadora);
 }

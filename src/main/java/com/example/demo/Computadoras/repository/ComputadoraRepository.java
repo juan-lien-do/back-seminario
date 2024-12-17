@@ -1,6 +1,7 @@
 package com.example.demo.Computadoras.repository;
 
 import com.example.demo.Computadoras.domain.Computadora;
+import com.example.demo.Envios.DetallesEnvioComputadora.domain.DetalleEnvioComputadora;
 import com.example.demo.Recursos.domain.Recurso;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
