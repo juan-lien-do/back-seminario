@@ -93,12 +93,12 @@ public class ArchivoEnvioService {
     }
 
     public ResponseEntity<String> eliminarFoto(@PathVariable Long idEnvio, @PathVariable String nombreArchivo){
-        File directorioUploads = new File(UPLOADS_DIR, String.valueOf(idEnvio));
+        File directorioUploads = new File(UPLOADS_DIR + idEnvio, "/envio");
         if(!directorioUploads.exists() || !directorioUploads.isDirectory()){
             return ResponseEntity.notFound().build();
         }
 
-        File photoArchive = new File(UPLOADS_DIR + "/" + idEnvio, nombreArchivo);
+        File photoArchive = new File(UPLOADS_DIR + idEnvio + "/envio", nombreArchivo);
         if(!photoArchive.exists() || !photoArchive.isFile()){
             return ResponseEntity.notFound().build();
         }
