@@ -3,6 +3,7 @@ package com.example.demo.Usuarios.service;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.example.demo.Usuarios.dto.*;
@@ -212,7 +213,12 @@ public class UsuarioService {
             //Guardar
             usuarioRepository.save(usuario);
             //Enviar email de cambio exitoso
-            enviarMail(usuario.getMail(), "Su clave fue modificada con éxito el " + LocalDateTime.now(), "Modificacion de Clave");
+            LocalDateTime fechaActual = LocalDateTime.now();
+            // Definir el formato deseado
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            // Formatear la fecha actual
+            String fechaFormateada = fechaActual.format(formatter);
+            enviarMail(usuario.getMail(), "Su clave fue modificada con éxito el " + fechaFormateada, "Modificacion de Clave");
             //Retorno de mensaje para modificacion exitosa
             return "Clave modificada con éxito";
         } else {
